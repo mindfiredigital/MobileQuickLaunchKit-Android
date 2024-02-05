@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="signIn">Iniciar sesión</string>
+    <string name="emailOrUserName">Correo electrónico o nombre de usuario</string>
+    <string name="fullName">Nombre completo</string>
+    <string name="email">Correo electrónico</string>
+    <string name="password">Contraseña</string>
+    <string name="confirmPassword">Confirmar contraseña</string>
+    <string name="forgotPassword">¿Olvidaste tu contraseña?</string>
+    <string name="forgotPasswordSubtitle">Ups, le pasa hasta a los mejores. Ingresa tu dirección de correo electrónico para solucionar el problema.</string>
+    <string name="sendOTP">Enviar OTP</string>
+    <string name="orSignInWith">O inicia sesión con</string>
+    <string name="orSignUpWith">O regístrate con</string>
+    <string name="DoNotHaveAccount">¿No tienes una cuenta? </string>
+    <string name="alreadyHaveAccount">¿Ya tienes una cuenta? </string>
+    <string name="signUp">Registrarse</string>
+    <string name="setNewPassword">Establecer nueva contraseña</string>
+    <string name="newPassword">Nueva contraseña</string>
+    <string name="confirmNewPassword">Confirmar nueva contraseña</string>
+    <string name="submitPassword">Enviar contraseña</string>
+    <string name="setNewPasswordSubTitle">Ingresa tu nueva contraseña abajo y revisa la pista mientras la ves.</string>
+    <string name="otpVerification">Verificación de OTP</string>
+    <string name="otpVerificationSubtitle">Copia el código de verificación en tu aplicación Authy para verificar esta recuperación de cuenta.</string>
+    <string name="verifyOTP">Verificar OTP</string>
+    <string name="settings">Ajustes</string>
+    <string name="editProfile">Editar perfil</string>
+    <string name="changePassword">Cambiar contraseña</string>
+    <string name="privacy">Privacidad</string>
+    <string name="account">Cuenta</string>
+    <string name="logout">Cerrar sesión</string>
+    <string name="others">Otros</string>
+    <string name="help">Ayuda</string>
+    <string name="aboutUs">Sobre nosotros</string>
+    <string name="phoneNo">Número de teléfono</string>
+    <string name="update">Actualizar</string>
+
+</resources>
