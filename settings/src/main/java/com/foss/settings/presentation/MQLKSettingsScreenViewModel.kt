@@ -7,9 +7,9 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.foss.core.use_cases.GetClearDataStoreUseCase
 import com.foss.core.utils.AppConstant
 import com.foss.core_ui.navigation.MQLKScreens
+import com.foss.shared.domain.use_cases.GetClearDataStoreUseCase
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth

@@ -32,4 +32,5 @@ dependencies {
     firebase()
     biometrics()
     timber()
+    shared()
 }

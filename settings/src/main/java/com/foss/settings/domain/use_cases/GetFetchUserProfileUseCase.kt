@@ -2,8 +2,8 @@ package com.foss.settings.domain.use_cases
 
 import com.foss.core.models.CustomResponseModel
 import com.foss.core.models.Resource
-import com.foss.core.models.UserModel
 import com.foss.settings.domain.repository.SettingsRepository
+import com.foss.shared.data.model.UserModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 

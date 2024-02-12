@@ -2,8 +2,8 @@ package com.foss.onboarding_presentation.screen
 
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
-import com.foss.core.use_cases.GetUserDataFromDataStoreUseCase
 import com.foss.core_ui.navigation.MQLKScreens
+import com.foss.shared.domain.use_cases.GetUserDataFromDataStoreUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

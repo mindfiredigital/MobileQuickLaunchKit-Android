@@ -197,3 +197,7 @@ fun DependencyHandler.sample() {
 fun DependencyHandler.utilities() {
     implementation(project(":utility"))
 }
+
+fun DependencyHandler.shared() {
+    implementation(project(":shared"))
+}

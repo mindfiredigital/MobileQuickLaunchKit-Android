@@ -20,5 +20,6 @@ dependencies {
     core()
     authDomain()
     biometrics()
+    shared()
 
 }

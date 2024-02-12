@@ -89,8 +89,11 @@ fun createHttpLoggingInterceptor(isDev: Boolean = true): HttpLoggingInterceptor 
  *
  * @return The created [HttpRequestInterceptor] instance.
  */
-fun createHttpRequestInterceptor(): HttpRequestInterceptor {
-    return HttpRequestInterceptor()
+fun createHttpRequestInterceptor(
+    context: Context,
+    networkHandler: NetworkHandler
+): HttpRequestInterceptor {
+    return HttpRequestInterceptor(context, networkHandler)
 }
 
 /**

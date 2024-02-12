@@ -12,8 +12,8 @@ import com.foss.auth_domain.use_case.GetSignUpUseCase
 import com.foss.auth_domain.use_case.GetSocialSignUpUseCase
 import com.foss.core.common.validations.MFMKValidations
 import com.foss.core.models.Resource
-import com.foss.core.use_cases.SetUserDataToDataStoreUseCase
 import com.foss.core_ui.navigation.MQLKScreens
+import com.foss.shared.domain.use_cases.SetUserDataToDataStoreUseCase
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
@@ -23,7 +23,7 @@ import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 import javax.inject.Inject
 
-// demouser@mail.com
+
 @HiltViewModel
 class SignUpScreenViewModel @Inject constructor(
     val getSignUpUseCase: GetSignUpUseCase,
@@ -264,8 +264,7 @@ class SignUpScreenViewModel @Inject constructor(
 
                     is Resource.Error -> {
                         _loading = false
-                        showToast(it.message.toString())
-                        Timber.tag(TAG).e("Error: ${it.message}")
+                        Timber.tag(TAG).e("Error from SignUpScreenViewModel: ${it.message}")
                     }
                 }
             }.launchIn(viewModelScope)

@@ -31,5 +31,6 @@ dependencies {
     coreUI()
     authData()
     authDomain()
+    shared()
 
 }

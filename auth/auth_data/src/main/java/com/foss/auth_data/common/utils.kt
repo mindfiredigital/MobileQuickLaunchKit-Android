@@ -8,7 +8,7 @@ import com.foss.auth_data.models.SignupResponseDTO
 import com.foss.auth_data.models.SocialLoginResponseDTO
 import com.foss.auth_data.models.SocialSignupResponseDTO
 import com.foss.core.models.CustomResponseModel
-import com.foss.core.models.UserModel
+import com.foss.shared.data.model.UserModel
 
 fun LoginResponseDTO.toDomainModel(): UserModel {
     return UserModel(

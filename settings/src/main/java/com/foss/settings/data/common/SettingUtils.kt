@@ -1,11 +1,11 @@
-package com.foss.auth_data.common
+package com.foss.settings.data.common
 
 
 import com.foss.core.models.CustomResponseModel
-import com.foss.core.models.UserModel
 import com.foss.settings.data.models.CreateUpdateProfileResponseDTO
 import com.foss.settings.data.models.GetuserProfileResponseDTO
 import com.foss.settings.data.models.UploadProfileImageResponseDTO
+import com.foss.shared.data.model.UserModel
 
 fun CreateUpdateProfileResponseDTO.toDomainModel(): CustomResponseModel<Any?> {
     return CustomResponseModel(message = this.message, data = null);

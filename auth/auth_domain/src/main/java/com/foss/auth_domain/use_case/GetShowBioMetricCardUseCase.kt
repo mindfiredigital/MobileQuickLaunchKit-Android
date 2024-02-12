@@ -2,7 +2,7 @@ package com.foss.auth_domain.use_case
 
 import androidx.biometric.BiometricManager
 import androidx.fragment.app.FragmentActivity
-import com.foss.core.use_cases.GetUserDataFromDataStoreUseCase
+import com.foss.shared.domain.use_cases.GetUserDataFromDataStoreUseCase
 import javax.inject.Inject
 
 

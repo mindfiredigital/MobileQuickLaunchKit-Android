@@ -1,8 +1,8 @@
 package com.foss.settings.domain.repository
 
 import com.foss.core.models.CustomResponseModel
-import com.foss.core.models.UserModel
 import com.foss.settings.domain.models.CreateUpdateProfileRequestParams
+import com.foss.shared.data.model.UserModel
 
 
 interface SettingsRepository {

@@ -1,7 +1,6 @@
 package com.foss.core.utils
 
 import android.content.Context
-import androidx.datastore.preferences.preferencesKey
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
@@ -65,8 +64,8 @@ object AppConstant {
         const val BASE_URL_NAMED = "base_url"
 
         //create product flavor BASE_URL
-        lateinit var BASE_URL: String
-        lateinit var Google_WEB_CLIENT_ID: String
+        var BASE_URL: String = "http://192.168.1.161:3001/api/v1/"
+        var Google_WEB_CLIENT_ID: String = "sfsdf"
         const val ApiSuccessStatus = "Success"
         const val ApiFailureStatus = "Error:102"
         const val Unknown_Error = "Unknown Error"
@@ -80,12 +79,7 @@ object AppConstant {
 object PreferenceKeys {
 
     object Keys {
-        val email = preferencesKey<String>("email")
-        val password = preferencesKey<String>("password")
-        val phoneNo = preferencesKey<String>("phone_no")
-        val fullName = preferencesKey<String>("full_name")
-        val token = preferencesKey<String>("token")
-        const val prefernceName = ("app_preference")
+        const val preferenceName = ("app_preference")
 
     }
 }

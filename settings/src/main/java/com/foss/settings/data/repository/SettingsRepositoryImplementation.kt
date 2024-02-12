@@ -1,11 +1,11 @@
 package com.foss.settings.data.repository
 
-import com.foss.auth_data.common.toDomainModel
 import com.foss.auth_data.source.remote.SettingApi
 import com.foss.core.models.CustomResponseModel
-import com.foss.core.models.UserModel
+import com.foss.settings.data.common.toDomainModel
 import com.foss.settings.domain.models.CreateUpdateProfileRequestParams
 import com.foss.settings.domain.repository.SettingsRepository
+import com.foss.shared.data.model.UserModel
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody

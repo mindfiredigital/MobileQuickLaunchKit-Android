@@ -3,7 +3,7 @@ package com.foss.auth_domain.use_case
 import com.foss.auth_domain.models.LoginRequestParamsModel
 import com.foss.auth_domain.repository.AuthRepository
 import com.foss.core.models.Resource
-import com.foss.core.models.UserModel
+import com.foss.shared.data.model.UserModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 

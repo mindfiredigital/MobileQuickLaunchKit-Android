@@ -8,7 +8,7 @@ import com.foss.auth_domain.models.SignUpRequestParamsModel
 import com.foss.auth_domain.models.SocialLoginRequestParams
 import com.foss.auth_domain.models.SocialSignupRequestParams
 import com.foss.core.models.CustomResponseModel
-import com.foss.core.models.UserModel
+import com.foss.shared.data.model.UserModel
 
 
 interface AuthRepository {

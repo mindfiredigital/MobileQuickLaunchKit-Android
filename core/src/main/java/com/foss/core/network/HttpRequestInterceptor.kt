@@ -1,8 +1,13 @@
 package com.foss.core.network
 
+import android.content.Context
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
+import android.widget.Toast
 import okhttp3.Interceptor
 import okhttp3.Response
-import timber.log.Timber
+import org.json.JSONObject
 
 /**
  *
@@ -17,7 +22,8 @@ import timber.log.Timber
  * Interceptor implementation for intercepting and modifying outgoing HTTP requests.
  * Such as adding headers, modifying the URL, or logging the request details
  */
-class HttpRequestInterceptor : Interceptor {
+class HttpRequestInterceptor(val context: Context?, val networkHandler: NetworkHandler) :
+    Interceptor {
     /**
      * Intercepts and modifies the outgoing request before it is sent to the server.
      *
@@ -25,16 +31,44 @@ class HttpRequestInterceptor : Interceptor {
      * @return The response received from the server.
      */
     override fun intercept(chain: Interceptor.Chain): Response {
-        // Get the original request from the chain
-        val originalRequest = chain.request()
 
-        // Create a new request with the same URL as the original request
-        val request = originalRequest.newBuilder().url(originalRequest.url).build()
+        if (!networkHandler.isConnected) {
+            backgroundThreadShortToast(context, "No internet connection")
+            return chain.proceed(chain.request())
+        }
 
-        // Log the modified request details for debugging
-        Timber.d(request.toString())
+        return try {
+            val request = chain.request()
+            val response = chain.proceed(request)
+            val rawJson: String = response.peekBody(Long.MAX_VALUE).string()
 
-        // Proceed with the modified request and return the server's response
-        return chain.proceed(request)
+            if (!response.isSuccessful) {
+                handleErrorResponse(context, response.code, rawJson)
+            }
+
+            response // Return the response after handling it
+        } catch (e: Exception) {
+            Log.d("Exception", e.message.toString())
+            chain.proceed(chain.request()) // Return the request in case of an exception
+        }
+    }
+}
+
+private fun handleErrorResponse(context: Context?, statusCode: Int, rawJson: String) {
+    val jsonObject = JSONObject(rawJson)
+
+    if (statusCode > 200) {
+        backgroundThreadShortToast(context, (jsonObject.optString("message")))
+
+    }
+}
+
+fun backgroundThreadShortToast(context: Context?, msg: String?) {
+    if (context != null && msg != null) {
+        Handler(Looper.getMainLooper()).post(Runnable {
+            Toast.makeText(
+                context, msg, Toast.LENGTH_SHORT
+            ).show()
+        })
     }
 }

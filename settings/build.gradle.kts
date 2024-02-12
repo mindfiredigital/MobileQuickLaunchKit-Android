@@ -30,6 +30,7 @@ dependencies {
     composeNavigation()
     core()
     coreUI()
+    shared()
     coilImage()
     retrofit()
     firebase()

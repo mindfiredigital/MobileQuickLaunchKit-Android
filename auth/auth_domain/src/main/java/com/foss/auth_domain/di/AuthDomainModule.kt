@@ -10,7 +10,7 @@ import com.foss.auth_domain.use_case.GetShowBioMetricCardUseCase
 import com.foss.auth_domain.use_case.GetSignUpUseCase
 import com.foss.auth_domain.use_case.GetSocialLoginUseCase
 import com.foss.auth_domain.use_case.GetSocialSignUpUseCase
-import com.foss.core.use_cases.GetUserDataFromDataStoreUseCase
+import com.foss.shared.domain.use_cases.GetUserDataFromDataStoreUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -102,16 +102,6 @@ fun MQLKTheme(
             }
         })
     }
-
-    MaterialTheme(colorScheme = colorScheme, typography = customTypography, content = {
-        if (ConfigReader.readConfig(context)) {
-            content()
-        } else {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text("Please provide config file")
-            }
-        }
-    })
 }
 
 object AppTheme {

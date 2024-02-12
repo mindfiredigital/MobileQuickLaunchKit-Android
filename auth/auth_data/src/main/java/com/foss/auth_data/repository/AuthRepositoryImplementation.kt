@@ -15,7 +15,7 @@ import com.foss.auth_domain.models.SocialLoginRequestParams
 import com.foss.auth_domain.models.SocialSignupRequestParams
 import com.foss.auth_domain.repository.AuthRepository
 import com.foss.core.models.CustomResponseModel
-import com.foss.core.models.UserModel
+import com.foss.shared.data.model.UserModel
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine

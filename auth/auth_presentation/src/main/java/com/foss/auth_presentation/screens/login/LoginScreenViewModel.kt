@@ -15,9 +15,9 @@ import com.foss.auth_domain.use_case.GetShowBioMetricCardUseCase
 import com.foss.auth_domain.use_case.GetSocialLoginUseCase
 import com.foss.core.common.validations.MFMKValidations
 import com.foss.core.models.Resource
-import com.foss.core.use_cases.GetUserDataFromDataStoreUseCase
-import com.foss.core.use_cases.SetUserDataToDataStoreUseCase
 import com.foss.core_ui.navigation.MQLKScreens
+import com.foss.shared.domain.use_cases.GetUserDataFromDataStoreUseCase
+import com.foss.shared.domain.use_cases.SetUserDataToDataStoreUseCase
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
@@ -145,7 +145,7 @@ class LoginScreenViewModel @Inject constructor(
 
                     is Resource.Error -> {
                         _loading = false
-                        Timber.tag(TAG).e("Error: ${it.message}")
+                        Timber.tag(TAG).e("Error from LoginScreenViewModel: ${it.message}")
                     }
                 }
             }.launchIn(viewModelScope)

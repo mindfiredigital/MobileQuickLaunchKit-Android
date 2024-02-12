@@ -19,4 +19,5 @@ dependencies {
     retrofit()
     core()
     biometrics()
+    shared()
 }

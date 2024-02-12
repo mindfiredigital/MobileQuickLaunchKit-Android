@@ -94,7 +94,7 @@ fun MyApp() {
                 NavigationDrawerItem(
                     label = { Text(text = "Drawer Item") },
                     selected = false,
-                    onClick = { MQLKUtilities.sharePlainText(context = context) },
+                    onClick = { MQLKUtilities.sharePlainText(context = context, "") },
                     icon = {
                         Icon(Icons.Default.Phone, null)
                     },

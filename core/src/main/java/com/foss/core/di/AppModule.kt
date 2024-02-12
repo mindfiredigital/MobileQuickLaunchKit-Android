@@ -1,13 +1,7 @@
 package com.foss.core.di
 
 import android.content.Context
-import androidx.datastore.DataStore
-import androidx.datastore.preferences.Preferences
-import androidx.datastore.preferences.createDataStore
 import com.foss.core.network.HttpRequestInterceptor
-import com.foss.core.network.HttpResponseInterceptor
-import com.foss.core.network.MFMKDataStore
-import com.foss.core.network.MFMKDataStoreImplementation
 import com.foss.core.network.MFMobileKitNetworkConfig
 import com.foss.core.network.NetworkHandler
 import com.foss.core.network.RetrofitNetworkConfig
@@ -15,18 +9,13 @@ import com.foss.core.network.createHttpLoggingInterceptor
 import com.foss.core.network.createHttpRequestInterceptor
 import com.foss.core.network.createMoshi
 import com.foss.core.network.createOkHttpClient
-import com.foss.core.use_cases.GetClearDataStoreUseCase
-import com.foss.core.use_cases.GetUserDataFromDataStoreUseCase
-import com.foss.core.use_cases.SetUserDataToDataStoreUseCase
 import com.foss.core.utils.AppConstant
-import com.foss.core.utils.PreferenceKeys
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -90,8 +79,14 @@ object AppModule {
      */
     @Provides
     @Singleton
-    fun provideHttpRequestInterceptor(): HttpRequestInterceptor {
-        return createHttpRequestInterceptor()
+    fun provideHttpRequestInterceptor(
+        context: Context,
+        networkHandler: NetworkHandler
+    ): HttpRequestInterceptor {
+        return createHttpRequestInterceptor(
+            context,
+            networkHandler
+        )
     }
 
     /**
@@ -111,19 +106,19 @@ object AppModule {
 
     @Provides
     @Named(value = AppConstant.Endpoints.HEADER_WITH_TOKEN)
-    fun provideAuthorizationInterceptorWithToken(getUserDataFromDataStoreUseCase: GetUserDataFromDataStoreUseCase): Interceptor {
+    fun provideAuthorizationInterceptorWithToken(): Interceptor {
         return Interceptor { chain ->
-            val token = runBlocking {
-                try {
-                    val userData = getUserDataFromDataStoreUseCase()
-                    userData?.token ?: ""
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    ""
-                }
-            }
+//            val token = runBlocking {
+//                try {
+//                    val userData = getUserDataFromDataStoreUseCase()
+//                    userData?.token ?: ""
+//                } catch (e: Exception) {
+//                    e.printStackTrace()
+//                    ""
+//                }
+//            }
             val request = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer $token")
+                .addHeader("Authorization", "Bearer token")
                 .addHeader("Content-Type", "multipart/form-data")
                 .build()
             chain.proceed(request)
@@ -139,15 +134,6 @@ object AppModule {
     @Singleton
     fun provideHttpLoggingInterceptor(networkConfig: RetrofitNetworkConfig): HttpLoggingInterceptor {
         return createHttpLoggingInterceptor(isDev = networkConfig.isDev())
-    }
-
-    @Provides
-    @Singleton
-    fun provideResponseInterceptor(
-        context: Context,
-        networkHandler: NetworkHandler
-    ): HttpResponseInterceptor {
-        return HttpResponseInterceptor(context, networkHandler)
     }
 
 
@@ -166,7 +152,6 @@ object AppModule {
         @ApplicationContext context: Context,
         httpLoggingInterceptor: HttpLoggingInterceptor,
         httpRequestInterceptor: HttpRequestInterceptor,
-        httpResponseInterceptor: HttpResponseInterceptor,
         @Named(value = AppConstant.Endpoints.HEADER_WITHOUT_TOKEN) authorizationInterceptor: Interceptor
     ): OkHttpClient {
         return createOkHttpClient(
@@ -175,7 +160,6 @@ object AppModule {
                 httpLoggingInterceptor,
                 httpRequestInterceptor,
                 authorizationInterceptor,
-                httpResponseInterceptor,
             ),
             context = context
         )
@@ -219,33 +203,4 @@ object AppModule {
     }
 
 
-    @Provides
-    @Singleton
-    fun provideDataStore(@ApplicationContext context: Context): DataStore<Preferences> {
-        return context.createDataStore(name = PreferenceKeys.Keys.prefernceName)
-    }
-
-    @Provides
-    @Singleton
-    fun provideMFMKDataStore(dataStore: DataStore<Preferences>): MFMKDataStore {
-        return MFMKDataStoreImplementation(dataStore)
-    }
-
-    @Provides
-    @Singleton
-    fun provideGetUserDataFromDataStoreUseCase(mfmkDataStore: MFMKDataStore): GetUserDataFromDataStoreUseCase {
-        return GetUserDataFromDataStoreUseCase(mfmkDataStore)
-    }
-
-    @Provides
-    @Singleton
-    fun provideSetUserDataToDataStoreUseCase(mfmkDataStore: MFMKDataStore): SetUserDataToDataStoreUseCase {
-        return SetUserDataToDataStoreUseCase(mfmkDataStore)
-    }
-
-    @Provides
-    @Singleton
-    fun provideClearDataStoreUseCase(mfmkDataStore: MFMKDataStore): GetClearDataStoreUseCase {
-        return GetClearDataStoreUseCase(mfmkDataStore)
-    }
 }
