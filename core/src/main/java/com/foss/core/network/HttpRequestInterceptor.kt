@@ -3,7 +3,6 @@ package com.foss.core.network
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.widget.Toast
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -48,7 +47,7 @@ class HttpRequestInterceptor(val context: Context?, val networkHandler: NetworkH
 
             response // Return the response after handling it
         } catch (e: Exception) {
-            Log.d("Exception", e.message.toString())
+            backgroundThreadShortToast(context, e.message)
             chain.proceed(chain.request()) // Return the request in case of an exception
         }
     }

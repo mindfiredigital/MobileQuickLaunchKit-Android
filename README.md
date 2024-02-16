@@ -243,7 +243,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "test4"
+rootProject.name = "myApp" /// replace it with your project name
 include(":app")
 include(":core")
 include(":core_ui")

@@ -33,6 +33,8 @@
     <string name="aboutUs">About us</string>
     <string name="phoneNo">Phone number</string>
     <string name="update">Update</string>
+    <string name="pleaseProvideValidEmail">Please provide a valid email</string>
+    <string name="error">Error</string>
 
 
 </resources>
