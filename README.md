@@ -37,7 +37,13 @@ a specific purpose.
 **Software Requirements:**
 
 - **Android Studio:** Install the latest version (3.0.1 or later) of Android Studio from the official website: [https://developer.android.com/studio](https://developer.android.com/studio).
-
+- **Config file:** Add the config.json file on your app->src->main->assets->config.json otherwise, you'll see a message saying "Please provide config file."
+```json
+{
+  "BASE_URL": "http://10.0.2.2:3001/api/v1/",
+  "Google_WEB_CLIENT_ID": "your_google_web_client_id"
+}
+```
 **Configuration:**
 
 1. **Maven Repository:**
