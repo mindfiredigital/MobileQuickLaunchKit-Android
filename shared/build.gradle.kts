@@ -1,14 +1,15 @@
 plugins {
     `android-library`
     `kotlin-android`
+    id("com.google.dagger.hilt.android")
+    id("kotlin-kapt")
+    id("maven-publish")
 }
 apply<MainGradlePlugin>()
 
 android {
     namespace = "com.foss.shared"
-    kotlinOptions {
-        jvmTarget = "18"
-    }
+
     buildFeatures {
         compose = true
     }
@@ -26,4 +27,17 @@ dependencies {
     hilt()
     timber()
     dataStore()
+}
+
+publishing {
+    publications {
+        register<MavenPublication>("release") {
+            groupId = "com.github.${PublishingConfig.githubUser}"
+            artifactId = "shared"
+            version = PublishingConfig.sharedVersion
+            afterEvaluate {
+                from(components["release"])
+            }
+        }
+    }
 }

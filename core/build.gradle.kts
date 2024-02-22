@@ -1,6 +1,9 @@
 plugins {
     `android-library`
     `kotlin-android`
+    id("com.google.dagger.hilt.android")
+    id("kotlin-kapt")
+    id("maven-publish")
 }
 
 apply<MainGradlePlugin>()
@@ -25,4 +28,17 @@ dependencies {
     dataStore()
     moshi()
 
+}
+
+publishing {
+    publications {
+        register<MavenPublication>("release") {
+            groupId = "com.github.${PublishingConfig.githubUser}"
+            artifactId = "core"
+            version = PublishingConfig.coreVersion
+            afterEvaluate {
+                from(components["release"])
+            }
+        }
+    }
 }

@@ -24,8 +24,6 @@ class MainGradlePlugin : Plugin<Project> {
         project.apply {
             plugin("android-library")
             plugin("kotlin-android")
-            plugin("com.google.dagger.hilt.android")
-            plugin("kotlin-kapt")
         }
     }
 
@@ -49,9 +47,19 @@ class MainGradlePlugin : Plugin<Project> {
             }
 
             compileOptions {
-                sourceCompatibility = JavaVersion.VERSION_18
-                targetCompatibility = JavaVersion.VERSION_18
+                sourceCompatibility = JavaVersion.VERSION_17
+                targetCompatibility = JavaVersion.VERSION_17
             }
+
+            publishing {
+                publishing {
+                    singleVariant("release") {
+                        withSourcesJar()
+                        withJavadocJar()
+                    }
+                }
+            }
+
         }
     }
 

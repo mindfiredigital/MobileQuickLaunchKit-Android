@@ -1,6 +1,7 @@
 plugins {
     `android-library`
     `kotlin-android`
+    id("maven-publish")
 }
 
 apply<MainGradlePlugin>()
@@ -14,23 +15,26 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = Versions.composeCompiler
     }
-
-
-    defaultConfig {
-        resourceConfigurations.plus(listOf("ta", "en", "hi", "your-language-tag"))
-
-    }
-
-
 }
 
 dependencies {
     //Need below three in every module
     Dependencies.coreKtx
     Dependencies.appCompat
-    hilt()
-    hiltTesting()
     compose()
     composeNavigation()
     core()
+}
+
+publishing {
+    publications {
+        register<MavenPublication>("release") {
+            groupId = "com.github.${PublishingConfig.githubUser}"
+            artifactId = "core_ui"
+            version = PublishingConfig.coreUIVersion
+            afterEvaluate {
+                from(components["release"])
+            }
+        }
+    }
 }
