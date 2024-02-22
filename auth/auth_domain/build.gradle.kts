@@ -1,6 +1,9 @@
 plugins {
     `android-library`
     `kotlin-android`
+    id("com.google.dagger.hilt.android")
+    kotlin("kapt")
+    id("maven-publish")
 }
 
 apply<MainGradlePlugin>()
@@ -20,4 +23,17 @@ dependencies {
     core()
     biometrics()
     shared()
+}
+
+publishing {
+    publications {
+        register<MavenPublication>("release") {
+            groupId = "com.github.${PublishingConfig.githubUser}"
+            artifactId = "auth_domain"
+            version = PublishingConfig.authVersion
+            afterEvaluate {
+                from(components["release"])
+            }
+        }
+    }
 }

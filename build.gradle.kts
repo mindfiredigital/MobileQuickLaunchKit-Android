@@ -10,3 +10,13 @@ buildscript {
         classpath("com.google.gms:google-services:4.4.1")
     }
 }
+
+subprojects {
+    tasks.matching { task ->
+        task.name.contains("javaDocReleaseGeneration", ignoreCase = true)
+    }.configureEach {
+        enabled = false
+    }
+
+}
+
