@@ -34,260 +34,58 @@ a specific purpose.
 
 ### Prerequisites
 
-- Install the latest Android Studio (should be 3.0.1 or later).
-- Clone the repo
-- Add the config.json file on your app->src->main->assets->config.json otherwise, you'll see a message saying "Please provide config file."
-```json
-{
-  "BASE_URL": "http://10.0.2.2:3001/api/v1/",
-  "Google_WEB_CLIENT_ID": "your_google_web_client_id"
-}
-```
+**Software Requirements:**
 
-### Steps for Setup
+- **Android Studio:** Install the latest version (3.0.1 or later) of Android Studio from the official website: [https://developer.android.com/studio](https://developer.android.com/studio).
 
-1. **Create a New Android Empty Activity Project:**
+**Configuration:**
 
-- Start by creating a new Android project with an Empty Activity template.
+1. **Maven Repository:**
+    - In your project's `settings.gradle` file, include the following maven repository URLs:
 
-2. **Run the Project and Check for Issues:**
-
-- Run the project and ensure there are no issues.
-
-3. **Create a New Directory named: buildSrc:**
-
-- It is crucial to create a new directory on the root level with exactly the
-  same name.
-- Create a new file named `.gitignore` inside buildSrc.
-- Include: `.gradle` and `build`
-- Remove everything from the project level `build.gradle.kts`. (You will get
-  this error: Error resolving plugin [id: 'com.android.application', version:
-  '8.2.1', apply: false] The request for this plugin could not be satisfied
-  because the plugin is already on the classpath with an unknown version, so
-  compatibility cannot be checked.)
-- Create a new file named `build.gradle.kts` inside buildSrc and include the
-  below code:
-
-```kotlin
-plugins {
-    `kotlin-dsl`
-}
-
-repositories {
-    google()
-    mavenCentral()
-}
-
-dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.20")
-    implementation("com.android.tools.build:gradle:8.1.1")
-    implementation("com.squareup:javapoet:1.13.0")
-}
-
-val compileKotlin: org.jetbrains.kotlin.gradle.tasks.KotlinCompile by tasks
-compileKotlin.kotlinOptions {
-    jvmTarget = "18"
-}
-```
-
-- Sync the project.
-- Create a new directory `src/main/kotlin`.
-- Include all files from `buildSrc->src->main->java` from the
-  QuickLaunchMobileKit repository.
-
-5. **Modify Project Level `build.gradle.kts`:**
-
-- Replace with:
-
-```kotlin
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
+    ```gradle
+    dependencyResolutionManagement {
+        repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+        repositories {
+            google()
+            mavenCentral()
+            maven { url = uri("[https://jitpack.io](https://jitpack.io)") }
+        }
     }
+    ```
 
-    dependencies {
-        classpath(Dependencies.hiltAgp)
-    }
-}
-```
+2. **Project Dependencies:**
+    - You have two options to integrate the project:
 
-6. **Modify App Level `build.gradle.kts`:**
+   **a. Include All Modules:**
 
-- Include kotlin("kapt") and id("com.google.dagger.hilt.android") inside plugin
-```kotlin
-plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("com.google.dagger.hilt.android")
-    kotlin("kapt")
+    ```gradle
+    implementation("com.github.mindfiredigital:MobileQuickLaunchKit-Android:<VERSION>")
+    ```
 
-}
-```
+   Replace `<VERSION>` with the desired version number.
 
-- Inside `android -> defaultConfig` replace:
+   **b. Include Specific Module:**
 
-```kotlin
-defaultConfig {
-    applicationId = "com.example.demo_test"
-    minSdk = 24
-    targetSdk = 34
-    versionCode = 1
-    versionName = "1.0"
+    ```gradle
+    implementation("com.github.mindfiredigital.MobileQuickLaunchKit-Android:<Modue_NAME>:<VERSION>")
+    ```
 
-    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    vectorDrawables {
-        useSupportLibrary = true
-    }
-}
-```
+   Replace `<MODULE_NAME>` with the name of the specific library you need and `<VERSION>` with the version number.
 
-With:
+3. **Hilt Setup:**
+    - Follow the instructions provided [here](./docs/hilt_setup.md) to configure Hilt dependency injection in your project.
 
-```kotlin
-defaultConfig {
-    applicationId = ProjectConfig.appId
-    minSdk = ProjectConfig.minSdk
-    targetSdk = ProjectConfig.targetSdk
-    versionCode = ProjectConfig.versionCode
-    versionName = ProjectConfig.versionName
-    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    vectorDrawables {
-        useSupportLibrary = true
-    }
-}
-```
-- Also, set `compileSdk = 34` to `compileSdk = ProjectConfig.compileSdk`.
+4. **Firebase Setup:**
+    - Integrate Firebase into your project by following the steps [here](./docs/firebase_setup.md). This is required for Google Sign-in functionality.
 
-7. **Replace `composeOptions`:**
+5. **Compose Version:**
+    - Update your `build.gradle` file with the following Compose dependencies:
 
-- Replace:
-
-```kotlin
-composeOptions {
-    kotlinCompilerExtensionVersion = “1.4.6”
-}
-```
-
-With:
-
-```kotlin
-composeOptions {
-    kotlinCompilerExtensionVersion = Versions.composeCompiler
-}
-```
-
-8. **Replace Dependencies:**
-
-- Replace dependencies with:
-
-```kotlin
-dependencies {
-    Dependencies.coreKtx
-    Dependencies.androidLifecycleRuntime
-    compose()
-    unitTesting()
-}
-```
-
-9. **Replace `compileOptions and kotlinOptions `:**
-
-- Replace:
-
-```kotlin
-  compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-}
-kotlinOptions {
-    jvmTarget = "1.8"
-}
-```
-
-With:
-
-```kotlin
-  compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_18
-    targetCompatibility = JavaVersion.VERSION_18
-}
-kotlinOptions {
-    jvmTarget = "18"
-}
-```
-
-9. **Sync Your Project:**
-
-- Sync your project to apply the changes.
-
-10. **Including Modules:**
-
-- To work with other modules, include `core` and `core_ui` modules first.
-- Copy the required module's folder from `MobileQuickLaunchKit` and paste it
-  into your project.
-- Include the module inside the project level `settings.gradle.kts`:
-
-```kotlin
-pluginManagement {
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-    }
-}
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
-rootProject.name = "myApp" /// replace it with your project name
-include(":app")
-include(":core")
-include(":core_ui")
-/// Other modules
-include(":onboarding:onboarding_presentation")
-include(":auth:auth_data")
-include(":auth:auth_domain")
-include(":auth:auth_presentation")
-include(":home")
-include(":settings")
-include(":sample")
-include(":utility")
-```
-
-- Sync the project.
-- Inside your main app level `build.gradle`, add the required module.
-
-```kotlin
-dependencies {
-    Dependencies.coreKtx
-    Dependencies.androidLifecycleRuntime
-    compose()
-    unitTesting()
-    hilt()
-    hiltTesting()
-    retrofit()
-    constraintLayout()
-    coilImage()
-    timber()
-    composeNavigation()
-
-    coreUI()
-    core()
-    onboardingPresentation()
-    authData()
-    authDomain()
-    authPresentation()
-    home()
-    settings()
-    utilities()
-}
-```
-
-- Sync the project, and you are good to go.
+    ```gradle
+    implementation("androidx.activity:activity-compose:1.8.0")
+    implementation(platform("androidx.compose:compose-bom:2023.03.00"))
+    ```
 
 ---
 

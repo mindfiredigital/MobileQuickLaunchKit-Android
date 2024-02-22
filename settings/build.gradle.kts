@@ -2,15 +2,16 @@
 plugins {
     `android-library`
     `kotlin-android`
+    id("com.google.dagger.hilt.android")
+    id("kotlin-kapt")
+    id("maven-publish")
 }
 apply<MainGradlePlugin>()
 
 
 android {
     namespace = "com.foss.settings"
-    kotlinOptions {
-        jvmTarget = "18"
-    }
+
     buildFeatures {
         compose = true
     }
@@ -35,7 +36,18 @@ dependencies {
     retrofit()
     firebase()
     timber()
-
-
-
 }
+
+publishing {
+    publications {
+        register<MavenPublication>("release") {
+            groupId = "com.github.${PublishingConfig.githubUser}"
+            artifactId = "settings"
+            version = PublishingConfig.settingsVersion
+            afterEvaluate {
+                from(components["release"])
+            }
+        }
+    }
+}
+

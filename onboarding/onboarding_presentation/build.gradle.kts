@@ -2,15 +2,15 @@
 plugins {
     `android-library`
     `kotlin-android`
+    id("com.google.dagger.hilt.android")
+    id("kotlin-kapt")
+    id("maven-publish")
 }
 
 apply<MainGradlePlugin>()
 
 android {
     namespace = "com.foss.onboarding_presentation"
-    kotlinOptions {
-        jvmTarget = "18"
-    }
     buildFeatures {
         compose = true
     }
@@ -33,4 +33,17 @@ dependencies {
     authDomain()
     shared()
 
+}
+
+publishing {
+    publications {
+        register<MavenPublication>("release") {
+            groupId = "com.github.${PublishingConfig.githubUser}"
+            artifactId = "onboarding_presentation"
+            version = PublishingConfig.onboardingVersion
+            afterEvaluate {
+                from(components["release"])
+            }
+        }
+    }
 }

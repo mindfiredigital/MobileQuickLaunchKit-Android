@@ -1,15 +1,16 @@
 plugins {
     `android-library`
     `kotlin-android`
+    id("com.google.dagger.hilt.android")
+    id("kotlin-kapt")
+    id("maven-publish")
+
 }
 
 apply<MainGradlePlugin>()
 
 android {
     namespace = "com.foss.auth_presentation"
-    kotlinOptions {
-        jvmTarget = "18"
-    }
     buildFeatures {
         compose = true
     }
@@ -33,4 +34,17 @@ dependencies {
     biometrics()
     timber()
     shared()
+}
+
+publishing {
+    publications {
+        register<MavenPublication>("release") {
+            groupId = "com.github.${PublishingConfig.githubUser}"
+            artifactId = "auth_presentation"
+            version = PublishingConfig.authVersion
+            afterEvaluate {
+                from(components["release"])
+            }
+        }
+    }
 }
