@@ -28,7 +28,30 @@ To integrate Hilt into your Android application, follow these steps:
     }
     ```
 
-2. **Modify Android Manifest:**
+2. **Add hilt plugin :**
+
+   Update your app level `build.gradle` file with the following:
+
+   ```gradle
+   plugins {
+   id("com.android.application")
+   id("org.jetbrains.kotlin.android")
+   id("com.google.dagger.hilt.android")
+   kotlin("kapt")
+   }
+   
+   kapt {
+      correctErrorTypes = true
+   }
+   
+   dependencies {
+   implementation("com.google.dagger:hilt-android:<Version>")
+   kapt("com.google.dagger:hilt-compiler:<Version>")
+   }
+      
+   ````
+
+3. **Modify Android Manifest:**
 
    Go to your main app's `AndroidManifest.xml` file and inside the `<application>` tag, add the
    following line to specify the application class:
@@ -39,7 +62,7 @@ To integrate Hilt into your Android application, follow these steps:
 
    ![Manifest](screenShots/add_name_manifest.png)
 
-3. **Add `@AndroidEntryPoint`:**
+4. **Add `@AndroidEntryPoint`:**
 
    In your `MainActivity.kt` file, add the `@AndroidEntryPoint` annotation to enable Hilt for this
    activity.
