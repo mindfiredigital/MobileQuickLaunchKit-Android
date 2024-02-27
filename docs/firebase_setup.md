@@ -48,5 +48,4 @@ To integrate Firebase into your Android project, follow these steps:
 15. After enabling Google, go to **Web SDK configuration** and copy the Web
     client ID. ![Copy Web Client ID](screenShots/copy_web_client_id.png)
 
-16. Paste the copied Web client ID in
-    Core->utils->AppConstant.kt->Google_WEB_CLIENT_ID
+16. Paste the copied Web client ID in your config file
