@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.foss.auth_presentation.screens.forgot_password.MQLKForgotPasswordScreen
+import com.foss.auth_presentation.screens.login.LoginScreenViewModel
 import com.foss.auth_presentation.screens.login.MQLKLoginScreen
 import com.foss.auth_presentation.screens.otp_verification.MQLKOTPVerificationScreen
 import com.foss.auth_presentation.screens.set_password.MQLKSetNewPasswordScreen
@@ -33,27 +34,68 @@ import com.foss.settings.presentation.edit_profile.MQLKEditProfileScreen
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SampleMQLKNavigationGraph(
-    navController: NavHostController,
-    startLocation: String,
-    drawerState: DrawerState
+    navController: NavHostController, startLocation: String, drawerState: DrawerState
 
 ) {
     NavHost(navController = navController, startDestination = startLocation) {
         // Define composable destinations and their corresponding routes
         composable(MQLKScreens.SplashScreen.route) {
             val viewModel: SplashScreenViewModel = hiltViewModel()
-            MQLKSplashScreenUI(navController, viewModel)
+            MQLKSplashScreenUI(viewModel = viewModel, navigateTo = {
+                navController.navigate(MQLKScreens.LoginScreen.route) {
+                    popUpTo(MQLKScreens.SplashScreen.route) {
+                        inclusive = true
+                    }
+                }
+            })
         }
 
         composable(MQLKScreens.LoginScreen.route) {
-            MQLKLoginScreen(navController, navigateTo = {
-                navController.navigate(it)
-            })
+            val viewModel: LoginScreenViewModel = hiltViewModel()
+            MQLKLoginScreen(
+                navController,
+                viewModel = viewModel,
+                onGoogleSignInButtonClickNavigate = {
+                    navController.navigate(MQLKScreens.HomeScreen.route) {
+                        popUpTo(MQLKScreens.LoginScreen.route) {
+                            inclusive = true
+                        }
+                    }
+                },
+                onSignInButtonClickNavigate = {
+                    navController.navigate(MQLKScreens.HomeScreen.route) {
+                        popUpTo(MQLKScreens.LoginScreen.route) {
+                            inclusive = true
+                        }
+                    }
+                },
+                onBioMetricsSignInButtonClickNavigate = {
+                    navController.navigate(MQLKScreens.HomeScreen.route) {
+                        popUpTo(MQLKScreens.LoginScreen.route) {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
         }
         composable(MQLKScreens.SignupScreen.route) {
-            MQLKSignUpScreen(navController, {
-                navController.navigate(it)
-            })
+            MQLKSignUpScreen(
+                navController,
+                onSignUpButtonClickNavigate = {
+                    navController.navigate(MQLKScreens.HomeScreen.route) {
+                        popUpTo(MQLKScreens.LoginScreen.route) {
+                            inclusive = true
+                        }
+                    }
+                },
+                onGoogleSignUpButtonClickNavigate = {
+                    navController.navigate(MQLKScreens.HomeScreen.route) {
+                        popUpTo(MQLKScreens.LoginScreen.route) {
+                            inclusive = true
+                        }
+                    }
+                },
+            )
         }
 
         composable(MQLKScreens.ForgotPasswordScreen.route) {
@@ -92,8 +134,7 @@ fun SampleMQLKNavigationGraph(
         }
 
         composable(
-            MQLKScreens.WebView.route,
-            arguments = listOf(navArgument("url") {
+            MQLKScreens.WebView.route, arguments = listOf(navArgument("url") {
                 type = NavType.StringType
             })
         ) {

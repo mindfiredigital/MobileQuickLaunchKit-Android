@@ -5,14 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.foss.auth_domain.models.SignUpRequestParamsModel
 import com.foss.auth_domain.models.SocialSignupRequestParams
 import com.foss.auth_domain.use_case.GetSignUpUseCase
 import com.foss.auth_domain.use_case.GetSocialSignUpUseCase
 import com.foss.core.common.validations.MFMKValidations
 import com.foss.core.models.Resource
-import com.foss.core_ui.navigation.MQLKScreens
 import com.foss.shared.domain.use_cases.SetUserDataToDataStoreUseCase
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.FirebaseAuth
@@ -138,7 +136,8 @@ class SignUpScreenViewModel @Inject constructor(
 
 
     fun onGoogleSignInResult(
-        account: GoogleSignInAccount?, navController: NavController
+        account: GoogleSignInAccount?,
+        callback: () -> Unit,
     ) {
         try {
             if (account != null) {
@@ -163,11 +162,7 @@ class SignUpScreenViewModel @Inject constructor(
                                     is Resource.Success -> {
                                         _loading = false
                                         getSetUserDataToDataStoreUseCase(it.data!!.data!!)
-                                        navController.navigate(MQLKScreens.HomeScreen.route) {
-                                            popUpTo(MQLKScreens.LoginScreen.route) {
-                                                inclusive = true
-                                            }
-                                        }
+                                        callback()
                                     }
 
                                     is Resource.Error -> {
@@ -199,7 +194,7 @@ class SignUpScreenViewModel @Inject constructor(
      * @param navigateTo Callback function to navigate to a specific destination.
      */
     fun onSignUpButtonPressed(
-        navController: NavController
+        callback: () -> Unit,
     ) {
 
         // Field validations for name, email, password, and confirm password
@@ -255,11 +250,7 @@ class SignUpScreenViewModel @Inject constructor(
 
                     is Resource.Success -> {
                         _loading = false
-                        navController.navigate(MQLKScreens.HomeScreen.route) {
-                            popUpTo(MQLKScreens.LoginScreen.route) {
-                                inclusive = true
-                            }
-                        }
+                        callback()
                     }
 
                     is Resource.Error -> {

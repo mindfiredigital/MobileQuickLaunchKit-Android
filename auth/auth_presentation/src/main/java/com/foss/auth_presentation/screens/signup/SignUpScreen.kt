@@ -27,12 +27,9 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.foss.core_ui.R
 import com.foss.core_ui.widgets.MFMKAppBarWrapper
 import com.foss.core_ui.widgets.MQLKElevatedButton
@@ -51,7 +48,8 @@ import com.foss.core_ui.widgets.MQLKSocialCard
 @Composable
 fun MQLKSignUpScreen(
     navController: NavController,
-    navigateTo: (String) -> Unit,
+    onSignUpButtonClickNavigate: () -> Unit,
+    onGoogleSignUpButtonClickNavigate: () -> Unit,
     viewModel: SignUpScreenViewModel = hiltViewModel()
 ) {
     // Obtain focus manager
@@ -62,7 +60,9 @@ fun MQLKSignUpScreen(
     val googleSignInLauncher = rememberLauncherForActivityResult(
         GoogleSignInActivityResultContract()
     ) { result ->
-        viewModel.onGoogleSignInResult(result, navController)
+        viewModel.onGoogleSignInResult(result) {
+            onGoogleSignUpButtonClickNavigate()
+        }
     }
 
     // Loading widget
@@ -166,7 +166,9 @@ fun MQLKSignUpScreen(
             item {
                 MQLKElevatedButton(name = context.getString(R.string.signUp)) {
                     focusManager.clearFocus()
-                    viewModel.onSignUpButtonPressed(navController);
+                    viewModel.onSignUpButtonPressed(callback = {
+                        onSignUpButtonClickNavigate()
+                    })
                 }
                 Spacer(modifier = Modifier.height(60.dp))
             }
@@ -213,7 +215,7 @@ fun MQLKSignUpScreen(
                         color = MaterialTheme.colorScheme.onPrimary
                     )
 
-                    Text(text = context.getString(R.string.signIn),
+                    Text(text = " " + context.getString(R.string.signIn),
                         style = MaterialTheme.typography.bodyMedium.copy(
                             fontWeight = FontWeight.Bold,
                         ),
@@ -233,11 +235,11 @@ fun MQLKSignUpScreen(
 }
 
 
-@Preview(showBackground = true, device = Devices.PHONE, showSystemUi = false)
-@Composable
-fun PreviewMFMCSignUpScreen() {
-    val navController = rememberNavController()
-    MQLKSignUpScreen(navController, {})
-}
+//@Preview(showBackground = true, device = Devices.PHONE, showSystemUi = false)
+//@Composable
+//fun PreviewMFMCSignUpScreen() {
+//    val navController = rememberNavController()
+//    MQLKSignUpScreen(navController, {})
+//}
 
 

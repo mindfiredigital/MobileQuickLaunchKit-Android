@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import kotlinx.coroutines.delay
 
 /**
@@ -26,11 +25,16 @@ import kotlinx.coroutines.delay
  */
 
 @Composable
-fun MQLKSplashScreenUI(navController: NavController, viewModel: SplashScreenViewModel) {
+fun MQLKSplashScreenUI(
+    viewModel: SplashScreenViewModel,
+    navigateTo: () -> Unit
+) {
     val context = LocalContext.current
     LaunchedEffect(context) {
         delay(2000)
-        viewModel.checkIfLoggedIn(navController)
+        viewModel.checkIfLoggedIn {
+            navigateTo()
+        }
     }
     Box(
         modifier = Modifier.fillMaxSize(),
