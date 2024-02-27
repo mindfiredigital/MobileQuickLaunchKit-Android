@@ -49,7 +49,7 @@ a specific purpose.
         repositories {
             google()
             mavenCentral()
-            maven { url = uri("[https://jitpack.io](https://jitpack.io)") }
+            maven { url = uri("https://jitpack.io") }
         }
     }
     ```
@@ -69,6 +69,8 @@ a specific purpose.
 
     ```gradle
     implementation("com.github.mindfiredigital.MobileQuickLaunchKit-Android:<Modue_NAME>:<VERSION>")
+    eg: 
+    implementation("com.github.mindfiredigital.MobileQuickLaunchKit-Android:core:0.1.0")
     ```
 
    Replace `<MODULE_NAME>` with the name of the specific library you need and `<VERSION>` with the version number.

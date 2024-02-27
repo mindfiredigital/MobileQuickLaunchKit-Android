@@ -1,4 +1,7 @@
 {
   "BASE_URL": "http://10.0.2.2:3001/api/v1/",
-  "Google_WEB_CLIENT_ID": "403260094928-mvl57v9fbgqetvd1qrb008s9ll2pum19.apps.googleusercontent.com"
+  "Google_WEB_CLIENT_ID": "your_key",
+  "PRIVACY_URL": "https://www.google.com/",
+  "HELP_URL": "https://www.google.com/",
+  "ABOUT_US_URL": "https://www.google.com/"
 }
