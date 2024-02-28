@@ -159,27 +159,68 @@ nav-graph for navigation.
 ```kotlin
 @Composable
 fun SampleMQLKNavigationGraph(
-    navController: NavHostController,
-    startLocation: String,
-    drawerState: DrawerState
+    navController: NavHostController, startLocation: String, drawerState: DrawerState
+
 ) {
     NavHost(navController = navController, startDestination = startLocation) {
         // Define composable destinations and their corresponding routes
         composable(MQLKScreens.SplashScreen.route) {
             val viewModel: SplashScreenViewModel = hiltViewModel()
-            MQLKSplashScreenUI(navController, viewModel)
+            MQLKSplashScreenUI(viewModel = viewModel, navigateTo = {
+                navController.navigate(MQLKScreens.LoginScreen.route) {
+                    popUpTo(MQLKScreens.SplashScreen.route) {
+                        inclusive = true
+                    }
+                }
+            })
         }
 
         composable(MQLKScreens.LoginScreen.route) {
-            MQLKLoginScreen(navController, navigateTo = {
-                navController.navigate(it)
-            })
+            val viewModel: LoginScreenViewModel = hiltViewModel()
+            MQLKLoginScreen(
+                navController,
+                viewModel = viewModel,
+                onGoogleSignInButtonClickNavigate = {
+                    navController.navigate(MQLKScreens.HomeScreen.route) {
+                        popUpTo(MQLKScreens.LoginScreen.route) {
+                            inclusive = true
+                        }
+                    }
+                },
+                onSignInButtonClickNavigate = {
+                    navController.navigate(MQLKScreens.HomeScreen.route) {
+                        popUpTo(MQLKScreens.LoginScreen.route) {
+                            inclusive = true
+                        }
+                    }
+                },
+                onBioMetricsSignInButtonClickNavigate = {
+                    navController.navigate(MQLKScreens.HomeScreen.route) {
+                        popUpTo(MQLKScreens.LoginScreen.route) {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
         }
-
         composable(MQLKScreens.SignupScreen.route) {
-            MQLKSignUpScreen(navController, {
-                navController.navigate(it)
-            })
+            MQLKSignUpScreen(
+                navController,
+                onSignUpButtonClickNavigate = {
+                    navController.navigate(MQLKScreens.HomeScreen.route) {
+                        popUpTo(MQLKScreens.LoginScreen.route) {
+                            inclusive = true
+                        }
+                    }
+                },
+                onGoogleSignUpButtonClickNavigate = {
+                    navController.navigate(MQLKScreens.HomeScreen.route) {
+                        popUpTo(MQLKScreens.LoginScreen.route) {
+                            inclusive = true
+                        }
+                    }
+                },
+            )
         }
 
         composable(MQLKScreens.ForgotPasswordScreen.route) {
@@ -191,6 +232,7 @@ fun SampleMQLKNavigationGraph(
         composable(MQLKScreens.OTPVerification.route) {
             MQLKOTPVerificationScreen(navController, {
                 navController.navigate(it)
+
             })
         }
 
@@ -217,11 +259,11 @@ fun SampleMQLKNavigationGraph(
         }
 
         composable(
-            MQLKScreens.WebView.route,
-            arguments = listOf(navArgument("url") {
+            MQLKScreens.WebView.route, arguments = listOf(navArgument("url") {
                 type = NavType.StringType
             })
         ) {
+
             MQLKWebView(navController, it.arguments?.getString("url"))
         }
     }
