@@ -29,13 +29,9 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.foss.auth_presentation.screens.login.widgets.MQLKLoginScreenForgotPasswordButton
 import com.foss.auth_presentation.screens.signup.GoogleSignInActivityResultContract
 import com.foss.core_ui.R
@@ -57,7 +53,10 @@ import com.foss.core_ui.widgets.MQLKTouchIdCard
 @Composable
 fun MQLKLoginScreen(
     navController: NavController,
-    navigateTo: (String) -> Unit, viewModel: LoginScreenViewModel = hiltViewModel()
+    onSignInButtonClickNavigate: () -> Unit,
+    onGoogleSignInButtonClickNavigate: () -> Unit,
+    onBioMetricsSignInButtonClickNavigate: () -> Unit,
+    viewModel: LoginScreenViewModel,
 ) {
 
     // Obtain focus manager
@@ -69,7 +68,12 @@ fun MQLKLoginScreen(
     val googleSignInLauncher = rememberLauncherForActivityResult(
         GoogleSignInActivityResultContract()
     ) { result ->
-        viewModel.onGoogleLoginPressed(result, navController)
+        viewModel.onGoogleLoginPressed(
+            result,
+            onSignInSuccessCallBack = {
+                onGoogleSignInButtonClickNavigate()
+            },
+        )
     }
     LaunchedEffect(true) {
         viewModel.ll(context)
@@ -154,7 +158,10 @@ fun MQLKLoginScreen(
             Column {
                 MQLKElevatedButton(name = context.getString(R.string.signIn)) {
                     focusManager.clearFocus()
-                    viewModel.onSignInButtonPressed(navController);
+                    viewModel.onSignInButtonPressed(
+                        callback = {
+                            onSignInButtonClickNavigate()
+                        });
                 }
                 Spacer(modifier = Modifier.height(16.dp))
             }
@@ -195,7 +202,9 @@ fun MQLKLoginScreen(
         if (viewModel.canShowBioMetrics) {
             item {
                 MQLKTouchIdCard {
-                    viewModel.doBioMetricsAuth(context, navController = navController)
+                    viewModel.doBioMetricsAuth(context, callback = {
+                        onBioMetricsSignInButtonClickNavigate()
+                    })
                 }
                 Spacer(modifier = Modifier.height(30.dp))
             }
@@ -216,7 +225,7 @@ fun MQLKLoginScreen(
                 )
 
                 Text(
-                    text = context.getString(R.string.signUp),
+                    text = " " + context.getString(R.string.signUp),
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontWeight = FontWeight.Bold,
                     ),
@@ -236,9 +245,9 @@ fun MQLKLoginScreen(
 
 }
 
-@Preview(showBackground = true, device = Devices.PHONE, showSystemUi = false)
-@Composable
-fun PreviewMFMCLoginScreen() {
-    val navController = rememberNavController()
-    MQLKLoginScreen(navController, {})
-}
+//@Preview(showBackground = true, device = Devices.PHONE, showSystemUi = false)
+//@Composable
+//fun PreviewMFMCLoginScreen() {
+//    val navController = rememberNavController()
+//    MQLKLoginScreen(navController, {})
+//}

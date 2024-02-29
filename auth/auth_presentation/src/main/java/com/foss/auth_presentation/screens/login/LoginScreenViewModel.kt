@@ -6,7 +6,6 @@ import androidx.compose.runtime.setValue
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.foss.auth_domain.models.LoginRequestParamsModel
 import com.foss.auth_domain.models.SocialLoginRequestParams
 import com.foss.auth_domain.use_case.GetBioMetricsUseCase
@@ -15,7 +14,6 @@ import com.foss.auth_domain.use_case.GetShowBioMetricCardUseCase
 import com.foss.auth_domain.use_case.GetSocialLoginUseCase
 import com.foss.core.common.validations.MFMKValidations
 import com.foss.core.models.Resource
-import com.foss.core_ui.navigation.MQLKScreens
 import com.foss.shared.domain.use_cases.GetUserDataFromDataStoreUseCase
 import com.foss.shared.domain.use_cases.SetUserDataToDataStoreUseCase
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -103,7 +101,7 @@ class LoginScreenViewModel @Inject constructor(
      * @param navigateTo Callback function to navigate to a specific destination.
      */
     fun onSignInButtonPressed(
-        navController: NavController,
+        callback: () -> Unit,
     ) {
         // Field validations for email and password
         if (!MFMKValidations.isValidEmail(_email)) {
@@ -135,11 +133,8 @@ class LoginScreenViewModel @Inject constructor(
                         _loading = false
                         if (it.data != null) {
                             getSetUserDataToDataStoreUseCase(it.data!!.copy(password = password))
-                            navController.navigate(MQLKScreens.HomeScreen.route) {
-                                popUpTo(MQLKScreens.LoginScreen.route) {
-                                    inclusive = true
-                                }
-                            }
+                            callback()
+
                         }
                     }
 
@@ -152,7 +147,7 @@ class LoginScreenViewModel @Inject constructor(
         }
     }
 
-    fun onGoogleLoginPressed(account: GoogleSignInAccount?, navController: NavController) {
+    fun onGoogleLoginPressed(account: GoogleSignInAccount?, onSignInSuccessCallBack: () -> Unit) {
         _loading = true
         if (account != null) {
             val credential = GoogleAuthProvider.getCredential(account.idToken, null)
@@ -171,11 +166,7 @@ class LoginScreenViewModel @Inject constructor(
 
                                 is Resource.Success -> {
                                     _loading = false
-                                    navController.navigate(MQLKScreens.HomeScreen.route) {
-                                        popUpTo(MQLKScreens.LoginScreen.route) {
-                                            inclusive = true
-                                        }
-                                    }
+                                    onSignInSuccessCallBack()
                                 }
 
                                 is Resource.Error -> {
@@ -200,7 +191,7 @@ class LoginScreenViewModel @Inject constructor(
         canShowBioMetrics = getShowBioMetricCardUseCase(context)
     }
 
-    fun doBioMetricsAuth(context: FragmentActivity, navController: NavController) {
+    fun doBioMetricsAuth(context: FragmentActivity, callback: () -> Unit) {
         provideBioMetricsUseCase(
             context
         ).onEach {
@@ -226,11 +217,7 @@ class LoginScreenViewModel @Inject constructor(
                                         _loading = false
                                         if (it2.data != null) {
                                             getSetUserDataToDataStoreUseCase(it2.data!!)
-                                            navController.navigate(MQLKScreens.HomeScreen.route) {
-                                                popUpTo(MQLKScreens.LoginScreen.route) {
-                                                    inclusive = true
-                                                }
-                                            }
+                                            callback()
                                         }
                                     }
 

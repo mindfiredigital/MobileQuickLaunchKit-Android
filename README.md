@@ -21,77 +21,90 @@ a specific purpose.
 
 ### Note
 
-- You are welcome to utilize this repository for your professional endeavors and make adjustments to
-  modules or the main app as necessary.
-- If you prefer to include only specific modules, kindly follow the steps below before integrating
-  them into your project.
-- HILT is an integral part of this repository. Therefore, it is essential to configure HILT in your
-  own project. Refer to the provided instructions [here](./docs/hilt_setup.md) after
-  completing the initial setup.
-- Firebase is utilized for enabling Google sign-in functionality. To integrate Firebase into your
-  project, please follow the instructions provided [here](./docs/firebase_setup.md) after
-  completing the initial setup..
+- You are welcome to utilize this repository for your professional endeavors and
+  make adjustments to modules or the main app as necessary.
+- If you prefer to include only specific modules, kindly follow the steps below
+  before integrating them into your project.
+- HILT is an integral part of this repository. Therefore, it is essential to
+  configure HILT in your own project. Refer to the provided instructions
+  [here](./docs/hilt_setup.md) after completing the initial setup.
+- Firebase is utilized for enabling Google sign-in functionality. To integrate
+  Firebase into your project, please follow the instructions provided
+  [here](./docs/firebase_setup.md) after completing the initial setup..
 
 ### Prerequisites
 
 **Software Requirements:**
 
-- **Android Studio:** Install the latest version (3.0.1 or later) of Android Studio from the official website: [https://developer.android.com/studio](https://developer.android.com/studio).
-- **Config file:** Add the config.json file on your app->src->main->assets->config.json otherwise, you'll see a message saying "Please provide config file."
+- **Android Studio:** Install the latest version (3.0.1 or later) of Android
+  Studio from the official website:
+  [https://developer.android.com/studio](https://developer.android.com/studio).
+- **Config file:** Add the config.json file on your
+  app->src->main->assets->config.json otherwise, you'll see a message saying
+  "Please provide config file."
+
 ```json
 {
   "BASE_URL": "http://10.0.2.2:3001/api/v1/",
   "Google_WEB_CLIENT_ID": "your_google_web_client_id"
 }
 ```
+
 **Configuration:**
 
 1. **Maven Repository:**
-    - In your project's `settings.gradle` file, include the following maven repository URLs:
+   - In your project's `settings.gradle` file, include the following maven
+     repository URLs:
 
-    ```gradle
-    dependencyResolutionManagement {
-        repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-        repositories {
-            google()
-            mavenCentral()
-            maven { url = uri("https://www.jitpack.io") }
-        }
-    }
-    ```
+   ```gradle
+   dependencyResolutionManagement {
+       repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+       repositories {
+           google()
+           mavenCentral()
+           maven { url = uri("https://www.jitpack.io") }
+       }
+   }
+   ```
 
 2. **Project Dependencies:**
-    - You have two options to integrate the project:
+   - You have two options to integrate the project:
 
    **a. Include All Modules:**
 
-    ```gradle
-    implementation("com.github.mindfiredigital:MobileQuickLaunchKit-Android:<VERSION>")
-    ```
+   ```gradle
+   implementation("com.github.mindfiredigital:MobileQuickLaunchKit-Android:<VERSION>")
+   ```
 
    Replace `<VERSION>` with the desired version number.
 
    **b. Include Specific Module:**
 
-    ```gradle
-    implementation("com.github.mindfiredigital.MobileQuickLaunchKit-Android:<Modue_NAME>:<VERSION>")
-    ```
+   ```gradle
+   implementation("com.github.mindfiredigital.MobileQuickLaunchKit-Android:<Modue_NAME>:<VERSION>")
+   eg: 
+   implementation("com.github.mindfiredigital.MobileQuickLaunchKit-Android:core:0.1.0")
+   ```
 
-   Replace `<MODULE_NAME>` with the name of the specific library you need and `<VERSION>` with the version number.
+   Replace `<MODULE_NAME>` with the name of the specific library you need and
+   `<VERSION>` with the version number.
 
 3. **Hilt Setup:**
-    - Follow the instructions provided [here](./docs/hilt_setup.md) to configure Hilt dependency injection in your project.
+   - Follow the instructions provided [here](./docs/hilt_setup.md) to configure
+     Hilt dependency injection in your project.
 
 4. **Firebase Setup:**
-    - Integrate Firebase into your project by following the steps [here](./docs/firebase_setup.md). This is required for Google Sign-in functionality.
+   - Integrate Firebase into your project by following the steps
+     [here](./docs/firebase_setup.md). This is required for Google Sign-in
+     functionality.
 
 5. **Compose Version:**
-    - Update your `build.gradle` file with the following Compose dependencies:
+   - Update your `build.gradle` file with the following Compose dependencies:
 
-    ```gradle
-    implementation("androidx.activity:activity-compose:1.8.0")
-    implementation(platform("androidx.compose:compose-bom:2023.03.00"))
-    ```
+   ```gradle
+   implementation("androidx.activity:activity-compose:1.8.0")
+   implementation(platform("androidx.compose:compose-bom:2023.03.00"))
+   ```
 
 ---
 
@@ -146,27 +159,68 @@ nav-graph for navigation.
 ```kotlin
 @Composable
 fun SampleMQLKNavigationGraph(
-    navController: NavHostController,
-    startLocation: String,
-    drawerState: DrawerState
+    navController: NavHostController, startLocation: String, drawerState: DrawerState
+
 ) {
     NavHost(navController = navController, startDestination = startLocation) {
         // Define composable destinations and their corresponding routes
         composable(MQLKScreens.SplashScreen.route) {
             val viewModel: SplashScreenViewModel = hiltViewModel()
-            MQLKSplashScreenUI(navController, viewModel)
+            MQLKSplashScreenUI(viewModel = viewModel, navigateTo = {
+                navController.navigate(MQLKScreens.LoginScreen.route) {
+                    popUpTo(MQLKScreens.SplashScreen.route) {
+                        inclusive = true
+                    }
+                }
+            })
         }
 
         composable(MQLKScreens.LoginScreen.route) {
-            MQLKLoginScreen(navController, navigateTo = {
-                navController.navigate(it)
-            })
+            val viewModel: LoginScreenViewModel = hiltViewModel()
+            MQLKLoginScreen(
+                navController,
+                viewModel = viewModel,
+                onGoogleSignInButtonClickNavigate = {
+                    navController.navigate(MQLKScreens.HomeScreen.route) {
+                        popUpTo(MQLKScreens.LoginScreen.route) {
+                            inclusive = true
+                        }
+                    }
+                },
+                onSignInButtonClickNavigate = {
+                    navController.navigate(MQLKScreens.HomeScreen.route) {
+                        popUpTo(MQLKScreens.LoginScreen.route) {
+                            inclusive = true
+                        }
+                    }
+                },
+                onBioMetricsSignInButtonClickNavigate = {
+                    navController.navigate(MQLKScreens.HomeScreen.route) {
+                        popUpTo(MQLKScreens.LoginScreen.route) {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
         }
-
         composable(MQLKScreens.SignupScreen.route) {
-            MQLKSignUpScreen(navController, {
-                navController.navigate(it)
-            })
+            MQLKSignUpScreen(
+                navController,
+                onSignUpButtonClickNavigate = {
+                    navController.navigate(MQLKScreens.HomeScreen.route) {
+                        popUpTo(MQLKScreens.LoginScreen.route) {
+                            inclusive = true
+                        }
+                    }
+                },
+                onGoogleSignUpButtonClickNavigate = {
+                    navController.navigate(MQLKScreens.HomeScreen.route) {
+                        popUpTo(MQLKScreens.LoginScreen.route) {
+                            inclusive = true
+                        }
+                    }
+                },
+            )
         }
 
         composable(MQLKScreens.ForgotPasswordScreen.route) {
@@ -178,6 +232,7 @@ fun SampleMQLKNavigationGraph(
         composable(MQLKScreens.OTPVerification.route) {
             MQLKOTPVerificationScreen(navController, {
                 navController.navigate(it)
+
             })
         }
 
@@ -204,11 +259,11 @@ fun SampleMQLKNavigationGraph(
         }
 
         composable(
-            MQLKScreens.WebView.route,
-            arguments = listOf(navArgument("url") {
+            MQLKScreens.WebView.route, arguments = listOf(navArgument("url") {
                 type = NavType.StringType
             })
         ) {
+
             MQLKWebView(navController, it.arguments?.getString("url"))
         }
     }
@@ -224,16 +279,16 @@ We have the `MQLKModelNavigationDrawerWrapper` composable available for
 integrating a drawer into your app. Follow these steps:
 
 1. **Wrap at Top Composable:**
-    - Wrap this at the very top of your composable hierarchy.
+   - Wrap this at the very top of your composable hierarchy.
 
 2. **Pass Drawer State:**
-    - Pass your drawer state as a parameter.
+   - Pass your drawer state as a parameter.
 
 3. **Include Composable Items:**
-    - Include all composable items that you want to show in your drawer.
+   - Include all composable items that you want to show in your drawer.
 
 4. **Use to Open or Close Drawer:**
-    - Use this to open or close the drawer.
+   - Use this to open or close the drawer.
 
 Example:
 
@@ -283,7 +338,7 @@ We have the `MQLKBottomNavBar` composable available for including a bottom
 navigation bar in your app. Follow these steps:
 
 1. **Pass Navigation Items and NavController:**
-    - Pass your navigation items and NavController as parameters.
+   - Pass your navigation items and NavController as parameters.
 
 Example:
 
@@ -346,167 +401,184 @@ and including modules
 
 ### 5. Utility
 
-This section outlines various utility functions designed to streamline your workflow.
+This section outlines various utility functions designed to streamline your
+workflow.
 
 1. **MQLKDates**
 
-    1. **getFormattedDateString**: This function accepts a `LocalDateTime` object and a `dateFormatter` and returns the date in the specified format as a string.
+   1. **getFormattedDateString**: This function accepts a `LocalDateTime` object
+      and a `dateFormatter` and returns the date in the specified format as a
+      string.
 
-       **Example:**
-       ```kotlin
-       val resp = MQLKDates.getFormattedDateString(LocalDateTime.now(), "MM-DD-Y")
-       print(resp)
-       // Output: "02-40-2024"
-       ```
+      **Example:**
+      ```kotlin
+      val resp = MQLKDates.getFormattedDateString(LocalDateTime.now(), "MM-DD-Y")
+      print(resp)
+      // Output: "02-40-2024"
+      ```
 
-    2. **changeDateFormat**: Use this function to convert the input date from one format to another. It requires the `inputDate` as a string, `inputFormat`, and `outputFormat`, returning the date in the desired format.
+   2. **changeDateFormat**: Use this function to convert the input date from one
+      format to another. It requires the `inputDate` as a string, `inputFormat`,
+      and `outputFormat`, returning the date in the desired format.
 
-       **Example:**
-       ```kotlin
-       val resp = MQLKDates.changeDateFormat("2024-02-09T13:58:12.727283","yyyy-MM-dd'T'HH:mm:ss.SSSSSS","YY-MM-dd")
-       print(resp)
-       // Output: "24-02-09"
-       ```
+      **Example:**
+      ```kotlin
+      val resp = MQLKDates.changeDateFormat("2024-02-09T13:58:12.727283","yyyy-MM-dd'T'HH:mm:ss.SSSSSS","YY-MM-dd")
+      print(resp)
+      // Output: "24-02-09"
+      ```
 
-    3. **getFormattedTime**: This function provides flexibility in formatting time. It accepts the format of type `TimeFormat` (an enum) and `currentTime` as a `LocalDateTime` object, returning the formatted time in either 12-hour or 24-hour notation.
+   3. **getFormattedTime**: This function provides flexibility in formatting
+      time. It accepts the format of type `TimeFormat` (an enum) and
+      `currentTime` as a `LocalDateTime` object, returning the formatted time in
+      either 12-hour or 24-hour notation.
 
-       **Example:**
-       ```kotlin
-       val resp = MQLKDates.getFormattedTime(MQLKDates.TimeFormat.TWENTY_FOUR_HOUR, LocalDateTime.now())
-       print(resp)
-       // Output: "02:01:18 pm" (12 hr) or "14:01:31" (24 hr)
-       ```
+      **Example:**
+      ```kotlin
+      val resp = MQLKDates.getFormattedTime(MQLKDates.TimeFormat.TWENTY_FOUR_HOUR, LocalDateTime.now())
+      print(resp)
+      // Output: "02:01:18 pm" (12 hr) or "14:01:31" (24 hr)
+      ```
 
-    4. **parseDateStringToDate**: This function parses a date string based on the specified format (`inputFormat`) and returns a `LocalDateTime` object.
+   4. **parseDateStringToDate**: This function parses a date string based on the
+      specified format (`inputFormat`) and returns a `LocalDateTime` object.
 
-       **Example:**
-       ```kotlin
-       val resp = MQLKDates.parseDateStringToDate("2024-02-09T13:58:12.727283","yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
-       print(resp)
-       // Output: "2024-02-09T13:58:12.727283" (LocalDateTime object)
-       ```
+      **Example:**
+      ```kotlin
+      val resp = MQLKDates.parseDateStringToDate("2024-02-09T13:58:12.727283","yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
+      print(resp)
+      // Output: "2024-02-09T13:58:12.727283" (LocalDateTime object)
+      ```
 
 2. **MQLKValidations**
 
-   This document provides a detailed overview of the functions available in the `MQLKValidations` class. These functions are written in Kotlin and can be used for various validation purposes in your application.
+   This document provides a detailed overview of the functions available in the
+   `MQLKValidations` class. These functions are written in Kotlin and can be
+   used for various validation purposes in your application.
 
-    - **isValidNumericInput**
+   - **isValidNumericInput**
 
-      **Description:** This function determines if the provided string is numeric or not.
+     **Description:** This function determines if the provided string is numeric
+     or not.
 
-      **Usage:**
-      ```kotlin
-      val resp = MQLKValidations.isValidNumericInput("435345.43")
-      print(resp)
-      // Output: true
-      ```
+     **Usage:**
+     ```kotlin
+     val resp = MQLKValidations.isValidNumericInput("435345.43")
+     print(resp)
+     // Output: true
+     ```
 
-    - **isValidEmailOrPhoneNumber**
+   - **isValidEmailOrPhoneNumber**
 
-      **Description:** This function determines if the provided string is a valid email address or phone number.
+     **Description:** This function determines if the provided string is a valid
+     email address or phone number.
 
-      **Usage:**
-      ```kotlin
-      val resp = MQLKValidations.isValidEmailOrPhoneNumber("demo@mail.com")
-      val resp2 = MQLKValidations.isValidEmailOrPhoneNumber("9988776655")
-      println(resp)
-      println(resp2)
-      // Output:
-      // true
-      // true
-      ```
+     **Usage:**
+     ```kotlin
+     val resp = MQLKValidations.isValidEmailOrPhoneNumber("demo@mail.com")
+     val resp2 = MQLKValidations.isValidEmailOrPhoneNumber("9988776655")
+     println(resp)
+     println(resp2)
+     // Output:
+     // true
+     // true
+     ```
 
-    - **isPasswordMatching**
+   - **isPasswordMatching**
 
-      **Description:** This function determines if the provided strings match and return `true` or `false`.
+     **Description:** This function determines if the provided strings match and
+     return `true` or `false`.
 
-      **Usage:**
-      ```kotlin
-      val resp = MQLKValidations.isPasswordMatching("Test@123", "Test@123")
-      val resp2 = MQLKValidations.isPasswordMatching("Test@1243", "Test@123")
-      println(resp)
-      println(resp2)
-      // Output:
-      // true
-      // false
-      ```
+     **Usage:**
+     ```kotlin
+     val resp = MQLKValidations.isPasswordMatching("Test@123", "Test@123")
+     val resp2 = MQLKValidations.isPasswordMatching("Test@1243", "Test@123")
+     println(resp)
+     println(resp2)
+     // Output:
+     // true
+     // false
+     ```
 
-    - **isValidEmail**
+   - **isValidEmail**
 
-      **Description:** This function determines if the provided string is a valid email address.
+     **Description:** This function determines if the provided string is a valid
+     email address.
 
-      **Usage:**
-      ```kotlin
-      val resp = MQLKValidations.isValidEmail("demo@mail.com")
-      val resp2 = MQLKValidations.isValidEmail("demouser@demo")
-      println(resp)
-      println(resp2)
-      // Output:
-      // true
-      // false
-      ```
+     **Usage:**
+     ```kotlin
+     val resp = MQLKValidations.isValidEmail("demo@mail.com")
+     val resp2 = MQLKValidations.isValidEmail("demouser@demo")
+     println(resp)
+     println(resp2)
+     // Output:
+     // true
+     // false
+     ```
 
-    - **isValidPhoneNumber**
+   - **isValidPhoneNumber**
 
-      **Description:** This function determines if the provided string is a valid phone number.
+     **Description:** This function determines if the provided string is a valid
+     phone number.
 
-      **Usage:**
-      ```kotlin
-      val resp = MQLKValidations.isValidPhoneNumber("9988776666")
-      val resp2 = MQLKValidations.isValidPhoneNumber("33224433")
-      println(resp)
-      println(resp2)
-      // Output:
-      // true
-      // false
-      ```
+     **Usage:**
+     ```kotlin
+     val resp = MQLKValidations.isValidPhoneNumber("9988776666")
+     val resp2 = MQLKValidations.isValidPhoneNumber("33224433")
+     println(resp)
+     println(resp2)
+     // Output:
+     // true
+     // false
+     ```
 
-    - **isValidURL**
+   - **isValidURL**
 
-      **Description:** This function determines if the provided string is a valid URL.
+     **Description:** This function determines if the provided string is a valid
+     URL.
 
-      **Usage:**
-      ```kotlin
-      val resp = MQLKValidations.isValidURL("http://api.demo.com")
-      val resp2 = MQLKValidations.isValidURL("htp:/api.com")
-      println(resp)
-      println(resp2)
-      // Output:
-      // true
-      // false
-      ```
+     **Usage:**
+     ```kotlin
+     val resp = MQLKValidations.isValidURL("http://api.demo.com")
+     val resp2 = MQLKValidations.isValidURL("htp:/api.com")
+     println(resp)
+     println(resp2)
+     // Output:
+     // true
+     // false
+     ```
 
-    - **isStrongPassword**
+   - **isStrongPassword**
 
-      **Description:** This function determines if the provided string is a strong password or not.
+     **Description:** This function determines if the provided string is a
+     strong password or not.
 
-      **Usage:**
-      ```kotlin
-      val resp = MQLKValidations.isStrongPassword("Test@123#")
-      val resp2 = MQLKValidations.isStrongPassword("TestDemo")
-      println(resp)
-      println(resp2)
-      // Output:
-      // true
-      // false
-      ```
+     **Usage:**
+     ```kotlin
+     val resp = MQLKValidations.isStrongPassword("Test@123#")
+     val resp2 = MQLKValidations.isStrongPassword("TestDemo")
+     println(resp)
+     println(resp2)
+     // Output:
+     // true
+     // false
+     ```
 
-    - **validateCreditCardNumber**
+   - **validateCreditCardNumber**
 
-      **Description:** This function determines if the provided string is a valid credit card number using the Luhn algorithm.
+     **Description:** This function determines if the provided string is a valid
+     credit card number using the Luhn algorithm.
 
-      **Usage:**
-      ```kotlin
-      val resp = MQLKValidations.validateCreditCardNumber("378282246310005")
-      val resp2 = MQLKValidations.validateCreditCardNumber("078282146310005")
-      println(resp)
-      println(resp2)
-      // Output:
-      // true
-      // false
-      ```
-
-
+     **Usage:**
+     ```kotlin
+     val resp = MQLKValidations.validateCreditCardNumber("378282246310005")
+     val resp2 = MQLKValidations.validateCreditCardNumber("078282146310005")
+     println(resp)
+     println(resp2)
+     // Output:
+     // true
+     // false
+     ```
 
 ## Troubleshoot
 

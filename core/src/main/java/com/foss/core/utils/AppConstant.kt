@@ -22,6 +22,9 @@ import java.io.IOException
 class Config(
     @Json(name = "BASE_URL") val baseUrl: String,
     @Json(name = "Google_WEB_CLIENT_ID") val gWebClient: String,
+    @Json(name = "PRIVACY_URL") val privacyUrl: String,
+    @Json(name = "HELP_URL") val helpUrl: String,
+    @Json(name = "ABOUT_US_URL") val aboutUdUrl: String,
 )
 
 
@@ -41,9 +44,15 @@ object ConfigReader {
             if (config != null) {
                 AppConstant.Endpoints.BASE_URL = config.baseUrl
                 AppConstant.Endpoints.Google_WEB_CLIENT_ID = config.gWebClient
+                AppConstant.Endpoints.PRIVACY_URL = config.privacyUrl
+                AppConstant.Endpoints.HELP_URL = config.helpUrl
+                AppConstant.Endpoints.ABOUT_US_URL = config.aboutUdUrl
             } else {
                 AppConstant.Endpoints.BASE_URL = "http://192.168.1.161:3001/api/v1/"
                 AppConstant.Endpoints.Google_WEB_CLIENT_ID = ""
+                AppConstant.Endpoints.PRIVACY_URL = ""
+                AppConstant.Endpoints.HELP_URL = ""
+                AppConstant.Endpoints.ABOUT_US_URL = ""
             }
             return true
 
@@ -65,7 +74,10 @@ object AppConstant {
 
         //create product flavor BASE_URL
         var BASE_URL: String = "http://192.168.1.161:3001/api/v1/"
-        var Google_WEB_CLIENT_ID: String = "sfsdf"
+        var Google_WEB_CLIENT_ID: String = ""
+        var PRIVACY_URL: String = ""
+        var HELP_URL: String = ""
+        var ABOUT_US_URL: String = ""
         const val ApiSuccessStatus = "Success"
         const val ApiFailureStatus = "Error:102"
         const val Unknown_Error = "Unknown Error"
