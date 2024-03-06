@@ -17,6 +17,8 @@ dependencies {
     implementation("androidx.annotation:annotation-jvm:1.7.1")
     Dependencies.coreKtx
     Dependencies.appCompat
+    firebase()
+    androidXCore()
 }
 
 publishing {

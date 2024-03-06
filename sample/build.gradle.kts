@@ -22,6 +22,8 @@ android {
 
 dependencies {
     implementation("com.google.firebase:firebase-auth:22.3.0")
+    implementation("com.google.accompanist:accompanist-permissions:0.35.0-alpha")
+
     //Default dependencies
     Dependencies.coreKtx
     Dependencies.androidLifecycleRuntime
@@ -44,6 +46,7 @@ dependencies {
     home()
     settings()
     onboardingPresentation()
+    firebase()
 
 }
 
