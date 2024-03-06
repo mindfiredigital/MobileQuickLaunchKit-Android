@@ -1,20 +1,15 @@
 package com.foss.settings.presentation
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.foss.core_ui.MQLKTheme
+import com.foss.core.utils.AppConstant
 import com.foss.core_ui.R
 import com.foss.core_ui.navigation.MQLKScreens
-import com.foss.core_ui.rememberWindowSizeClass
 import com.foss.core_ui.widgets.MFMKAppBarWrapper
 import com.foss.core_ui.widgets.MQLKLoadingDialog
 import com.foss.settings.presentation.widgets.MQLKSettingPageItem
@@ -24,7 +19,6 @@ import com.foss.settings.presentation.widgets.MQLKSettingPageSubTitle
 fun MQLKSettingsScreen(navController: NavController) {
     val viewModel: MQLKSettingsScreenViewModel = hiltViewModel()
     val context = LocalContext.current
-//    BackHandler(enabled = true) {}
 
     // Loading widget
     if (viewModel.loading) {
@@ -36,8 +30,7 @@ fun MQLKSettingsScreen(navController: NavController) {
         showBackButton = false
     ) {
         LazyColumn(
-            modifier = it
-                .padding(horizontal = 20.dp)
+            modifier = it.padding(horizontal = 20.dp)
         ) {
 
             // SubTitle
@@ -63,7 +56,7 @@ fun MQLKSettingsScreen(navController: NavController) {
 
             item {
                 MQLKSettingPageItem(context.getString(R.string.privacy)) {
-                    navController.navigate(MQLKScreens.WebView.passUrl("https://medium.com/@sahar.asadian90/webview-in-jetpack-compose-71f237873c2e"))
+                    navController.navigate(MQLKScreens.WebView.passUrl(url = AppConstant.Endpoints.PRIVACY_URL))
                 }
             }
 
@@ -81,14 +74,14 @@ fun MQLKSettingsScreen(navController: NavController) {
 
             item {
                 MQLKSettingPageItem(context.getString(R.string.help)) {
-                    navController.navigate(MQLKScreens.WebView.route)
+                    navController.navigate(MQLKScreens.WebView.passUrl(url = AppConstant.Endpoints.HELP_URL))
 
                 }
             }
 
             item {
                 MQLKSettingPageItem(context.getString(R.string.aboutUs)) {
-                    navController.navigate(MQLKScreens.WebView.passUrl("https://medium.com/@sahar.asadian90/webview-in-jetpack-compose-71f237873c2e"))
+                    navController.navigate(MQLKScreens.WebView.passUrl(url = AppConstant.Endpoints.ABOUT_US_URL))
                 }
             }
         }
