@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name" translatable="false">MobileQuickLaunchKit</string>
+    <string name="default_notification_channel_id" translatable="false">my_notification_channel</string>
+
 </resources>

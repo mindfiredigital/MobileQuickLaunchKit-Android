@@ -13,6 +13,7 @@ import org.gradle.kotlin.dsl.project
 object Dependencies {
 
     const val coreKtx = "androidx.core:core-ktx:${Versions.coreKtxVersion}"
+    const val core= "androidx.core:core:${Versions.coreVersion}"
     const val appCompat = "androidx.appcompat:appcompat:${Versions.appCompatVersion}"
     const val androidLifecycleRuntime =
         "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycleVersion}"
@@ -73,18 +74,26 @@ object Dependencies {
     const val junitAndroidExt = "androidx.test.ext:junit:${Versions.junitAndroidExtVersion}"
     const val espresso = "androidx.test.espresso:espresso-core:${Versions.espressoVersion}"
 
-    const val firebaseAuth = "com.google.firebase:firebase-auth:22.3.0"
+    const val firebaseAuth = "com.google.firebase:firebase-auth"
     const val playServicesAuth = "com.google.android.gms:play-services-auth:20.7.0"
+    const val firebaseMessaging = "com.google.firebase:firebase-messaging-ktx"
+    const val firebaseBOM = "com.google.firebase:firebase-bom:32.7.3"
     const val biometrics = "androidx.biometric:biometric:1.2.0-alpha05"
     const val dataStore = "androidx.datastore:datastore-preferences:1.0.0-alpha01"
 }
 
 
 fun DependencyHandler.firebase() {
+    implementation(platform(Dependencies.firebaseBOM))
     implementation(Dependencies.firebaseAuth)
     implementation(Dependencies.playServicesAuth)
+    implementation(Dependencies.firebaseMessaging)
 }
 
+fun DependencyHandler.androidXCore(){
+    implementation(Dependencies.core)
+
+}
 fun DependencyHandler.dataStore() {
     implementation(Dependencies.dataStore)
 }
@@ -142,6 +151,7 @@ fun DependencyHandler.constraintLayout() {
 fun DependencyHandler.coilImage() {
     implementation(Dependencies.coilImage)
 }
+
 fun DependencyHandler.moshi() {
     implementation(Dependencies.moshi)
     implementation(Dependencies.moshiKotlinCodegen)
