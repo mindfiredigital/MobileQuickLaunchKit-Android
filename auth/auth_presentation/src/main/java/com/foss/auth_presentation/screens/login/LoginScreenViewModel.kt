@@ -12,10 +12,10 @@ import com.foss.auth_domain.use_case.GetBioMetricsUseCase
 import com.foss.auth_domain.use_case.GetLoginUseCase
 import com.foss.auth_domain.use_case.GetShowBioMetricCardUseCase
 import com.foss.auth_domain.use_case.GetSocialLoginUseCase
-import com.foss.core.common.validations.MFMKValidations
 import com.foss.core.models.Resource
 import com.foss.shared.domain.use_cases.GetUserDataFromDataStoreUseCase
 import com.foss.shared.domain.use_cases.SetUserDataToDataStoreUseCase
+import com.foss.utility.MQLKValidations
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
@@ -104,14 +104,14 @@ class LoginScreenViewModel @Inject constructor(
         callback: () -> Unit,
     ) {
         // Field validations for email and password
-        if (!MFMKValidations.isValidEmail(_email)) {
+        if (!MQLKValidations.isValidEmail(_email)) {
             isEmailError = true
             emailErrorText = "Please provide a valid email"
         } else {
             isEmailError = false
         }
 
-        if (!MFMKValidations.isPasswordValid(_password)) {
+        if (!MQLKValidations.isStrongPassword(_password)) {
             isPasswordError = true
             passwordErrorText = "Please provide a valid password"
         } else {
@@ -187,7 +187,7 @@ class LoginScreenViewModel @Inject constructor(
         }
     }
 
-    suspend fun ll(context: FragmentActivity) {
+    suspend fun checkIfCanShowBioMetrics(context: FragmentActivity) {
         canShowBioMetrics = getShowBioMetricCardUseCase(context)
     }
 

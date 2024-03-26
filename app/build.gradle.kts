@@ -66,4 +66,6 @@ dependencies {
     retrofit()
     timber()
     sample()
+    firebase()
+    utilities()
 }

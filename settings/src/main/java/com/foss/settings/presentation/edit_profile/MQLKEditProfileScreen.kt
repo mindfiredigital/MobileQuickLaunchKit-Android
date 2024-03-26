@@ -8,10 +8,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Person
@@ -37,6 +39,7 @@ fun MQLKEditProfileScreen(navController: NavController) {
     val window = rememberWindowSizeClass();
     val context = LocalContext.current
     val viewModel: MQLKEditProfileScreenViewModel = hiltViewModel()
+    val scrollState = rememberScrollState()
 
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
@@ -58,80 +61,72 @@ fun MQLKEditProfileScreen(navController: NavController) {
         navController = navController,
         title = context.getString(R.string.editProfile)
     ) {
+
         Column(
-            modifier = it
+            it
                 .padding(horizontal = 20.dp)
                 .padding(bottom = 32.dp)
+                .fillMaxSize()
+                .verticalScroll(scrollState),
         ) {
-            LazyColumn() {
-                item {
-                    Spacer(modifier = Modifier.height(32.dp))
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        MQLKProfileImageWrapper(
-                            uri = viewModel.image,
-                            width = window.width.size.dp,
-                            onClick = {
-                                singlePhotoPickerLauncher.launch(
-                                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                                )
-                            },
+
+            Spacer(modifier = Modifier.height(32.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                MQLKProfileImageWrapper(
+                    uri = viewModel.image,
+                    width = window.width.size.dp,
+                    onClick = {
+                        singlePhotoPickerLauncher.launch(
+                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
                         )
-                    }
-                    Spacer(modifier = Modifier.height(32.dp))
-                }
-
-                item {
-                    MQLKOutlinedTextField(
-                        placeHolder = context.getString(R.string.email),
-                        onChange = { value ->
-                            viewModel.onEmailValueChange(value)
-                        },
-                        value = viewModel.email,
-                        isError = viewModel.isEmailError,
-                        errorText = viewModel.emailErrorText
-                    ) {
-                        Icon(Icons.Default.Email, null)
-                    }
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                }
-                item {
-                    MQLKOutlinedTextField(
-                        placeHolder = context.getString(R.string.fullName),
-                        onChange = { value ->
-                            viewModel.onFullNameValueChange(value)
-                        },
-                        value = viewModel.fullName,
-                        isError = viewModel.isFullNameError,
-                        errorText = viewModel.fullNameErrorText,
-                    ) {
-                        Icon(Icons.Default.Person, null)
-                    }
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                }
-                item {
-                    MQLKOutlinedTextField(
-                        placeHolder = context.getString(R.string.phoneNo),
-                        onChange = { value ->
-                            viewModel.onPhoneNoValueChange(value)
-                        },
-                        value = viewModel.phoneNo,
-                        isError = viewModel.isPhoneNoError,
-                        errorText = viewModel.phoneNoErrorText,
-                    ) {
-                        Icon(Icons.Default.Phone, null)
-                    }
-                }
+                    },
+                )
+            }
+            Spacer(modifier = Modifier.height(32.dp))
+            MQLKOutlinedTextField(
+                placeHolder = context.getString(R.string.email),
+                onChange = { value ->
+                    viewModel.onEmailValueChange(value)
+                },
+                value = viewModel.email,
+                isError = viewModel.isEmailError,
+                errorText = viewModel.emailErrorText
+            ) {
+                Icon(Icons.Default.Email, null)
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            MQLKOutlinedTextField(
+                placeHolder = context.getString(R.string.fullName),
+                onChange = { value ->
+                    viewModel.onFullNameValueChange(value)
+                },
+                value = viewModel.fullName,
+                isError = viewModel.isFullNameError,
+                errorText = viewModel.fullNameErrorText,
+            ) {
+                Icon(Icons.Default.Person, null)
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            MQLKOutlinedTextField(
+                placeHolder = context.getString(R.string.phoneNo),
+                onChange = { value ->
+                    viewModel.onPhoneNoValueChange(value)
+                },
+                value = viewModel.phoneNo,
+                isError = viewModel.isPhoneNoError,
+                errorText = viewModel.phoneNoErrorText,
+            ) {
+                Icon(Icons.Default.Phone, null)
             }
             Spacer(modifier = Modifier.weight(1.0f)) // fill height with spacer
             MQLKElevatedButton(context.getString(R.string.update)) {
                 viewModel.updateUserProfile()
             }
         }
+
     }
 }
 

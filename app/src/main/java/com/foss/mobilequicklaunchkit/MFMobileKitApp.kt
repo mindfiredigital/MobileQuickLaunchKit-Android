@@ -1,6 +1,10 @@
 package com.foss.mobilequicklaunchkit
 
 import android.app.Application
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.os.Build
+import androidx.annotation.RequiresApi
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
@@ -14,8 +18,9 @@ import timber.log.Timber
  * Created On: 12-12-2023
  */
 @HiltAndroidApp
-class MFMobileKitApp : Application(){
+class MFMobileKitApp : Application() {
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate() {
         super.onCreate()
 
@@ -23,6 +28,14 @@ class MFMobileKitApp : Application(){
         if (Timber.treeCount == 0 && BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
+
+        val notificationChannel = NotificationChannel(
+            Consts.NOTIFICATION_CHANNEL_ID,
+            Consts.NOTIFICATION_CHANNEL_NAME,
+            NotificationManager.IMPORTANCE_HIGH
+        )
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(notificationChannel)
     }
 
 }

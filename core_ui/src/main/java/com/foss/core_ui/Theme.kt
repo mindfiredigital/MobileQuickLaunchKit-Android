@@ -44,7 +44,8 @@ fun MQLKTheme(
     ),
     dynamicColor: Boolean = false,
     windowSizeClass: WindowSizeClass,
-    content: @Composable () -> Unit
+    byPassConfig: Boolean = false,
+    content: @Composable () -> Unit,
 ) {
 
     val colorScheme = when {
@@ -93,7 +94,7 @@ fun MQLKTheme(
 
     ProvideThemeUtils(dimensions = dimensions, orientation = orientation) {
         MaterialTheme(colorScheme = colorScheme, typography = customTypography, content = {
-            if (ConfigReader.readConfig(context)) {
+            if (ConfigReader.readConfig(context) || byPassConfig) {
                 content()
             } else {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {

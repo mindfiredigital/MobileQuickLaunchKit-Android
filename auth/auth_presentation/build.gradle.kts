@@ -34,6 +34,7 @@ dependencies {
     biometrics()
     timber()
     shared()
+    utilities()
 }
 
 publishing {

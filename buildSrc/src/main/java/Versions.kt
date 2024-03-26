@@ -8,10 +8,11 @@
  */
 object Versions {
     const val coreKtxVersion = "1.9.0"
+    const val coreVersion = "1.12.0"
     const val appCompatVersion = "1.6.1"
     const val lifecycleVersion ="2.6.2"
 
-    const val composeBomVersion = "2023.03.00"
+    const val composeBomVersion = "2024.02.00"
     const val composeCompiler = "1.4.8"
     const val activityComposeVersion = "1.8.0"
     const val hilt = "2.46.1"

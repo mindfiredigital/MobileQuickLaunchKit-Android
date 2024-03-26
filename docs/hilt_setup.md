@@ -50,6 +50,11 @@ To integrate Hilt into your Android application, follow these steps:
    }
       
    ````
+   Note:
+   Update your project level `build.gradle` file with the following:
+   ```gradle 
+   id("com.google.dagger.hilt.android") version "2.44" apply false 
+   ```
 
 3. **Modify Android Manifest:**
 
