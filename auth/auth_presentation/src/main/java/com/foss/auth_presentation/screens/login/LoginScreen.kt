@@ -1,6 +1,5 @@
 package com.foss.auth_presentation.screens.login
 
-import android.app.Activity
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.clickable
@@ -29,13 +28,18 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.foss.auth_presentation.screens.login.widgets.MQLKLoginScreenForgotPasswordButton
 import com.foss.auth_presentation.screens.signup.GoogleSignInActivityResultContract
+import com.foss.core_ui.MQLKTheme
 import com.foss.core_ui.R
 import com.foss.core_ui.navigation.MQLKScreens
+import com.foss.core_ui.rememberWindowSizeClass
 import com.foss.core_ui.widgets.MQLKElevatedButton
 import com.foss.core_ui.widgets.MQLKLoadingDialog
 import com.foss.core_ui.widgets.MQLKLogo
@@ -43,6 +47,7 @@ import com.foss.core_ui.widgets.MQLKOutlinedTextField
 import com.foss.core_ui.widgets.MQLKScreenTitle
 import com.foss.core_ui.widgets.MQLKSocialCard
 import com.foss.core_ui.widgets.MQLKTouchIdCard
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 
 /**
  * Composable representing the login screen UI.
@@ -50,43 +55,119 @@ import com.foss.core_ui.widgets.MQLKTouchIdCard
  * @param navigateTo Callback function to navigate to a specific destination.
  * @param viewModel ViewModel for managing login screen logic and data.
  */
+
+@Composable
+fun MQLKLoginScreenParams(
+    navController: NavController,
+    onSignInButtonClickNavigate: () -> Unit,
+    onGoogleSignInButtonClickNavigate: () -> Unit,
+    onBioMetricsSignInButtonClickNavigate: () -> Unit,
+    viewModel: LoginScreenViewModel
+) {
+
+    MQLKLoginScreen(
+        navController = navController,
+        onSignInButtonClickNavigate = onSignInButtonClickNavigate,
+        onGoogleSignInButtonClickNavigate = onGoogleSignInButtonClickNavigate,
+        onBioMetricsSignInButtonClickNavigate = onBioMetricsSignInButtonClickNavigate,
+        onGoogleLoginButtonPressed = { account, onSignInSuccessCallBack ->
+            viewModel.onGoogleLoginPressed(account, onSignInSuccessCallBack)
+        },
+        checkIfCanShowBioMetrics = {
+            viewModel.checkIfCanShowBioMetrics(it)
+        },
+        toastMessage = viewModel.toastMessage,
+        loading = viewModel.loading,
+        showToast = {
+            viewModel.showToast(it)
+        },
+        email = viewModel.email,
+        isEmailError = viewModel.isEmailError,
+        emailErrorText = viewModel.emailErrorText,
+        onEmailValueChange = {
+            viewModel.onEmailValueChange(it)
+        },
+        password = viewModel.password,
+        isPasswordError = viewModel.isPasswordError,
+        passwordErrorText = viewModel.passwordErrorText,
+        onPasswordValueChange = {
+            viewModel.onPasswordValueChange(it)
+        },
+        onSignInButtonPressed
+        = {
+            viewModel.onSignInButtonPressed(it)
+        },
+        canShowBioMetrics = viewModel.canShowBioMetrics,
+        doBioMetricsAuth = { context, callBack ->
+            viewModel.doBioMetricsAuth(context, callBack)
+        }
+    )
+
+
+}
+
 @Composable
 fun MQLKLoginScreen(
     navController: NavController,
     onSignInButtonClickNavigate: () -> Unit,
     onGoogleSignInButtonClickNavigate: () -> Unit,
     onBioMetricsSignInButtonClickNavigate: () -> Unit,
-    viewModel: LoginScreenViewModel,
-) {
+    onGoogleLoginButtonPressed: (
+        account: GoogleSignInAccount?,
+        onSignInSuccessCallBack: () -> Unit
+    ) -> Unit,
+    checkIfCanShowBioMetrics: suspend (context: FragmentActivity) -> Unit,
+    toastMessage: String,
+    loading: Boolean,
+    showToast: (String) -> Unit,
+    email: String,
+    isEmailError: Boolean,
+    emailErrorText: String,
+    onEmailValueChange: (String) -> Unit,
+    password: String,
+    isPasswordError: Boolean,
+    passwordErrorText: String,
+    onPasswordValueChange: (String) -> Unit,
+    onSignInButtonPressed: (() -> Unit) -> Unit,
+    canShowBioMetrics: Boolean,
+    doBioMetricsAuth: (FragmentActivity, () -> Unit) -> Unit,
+
+    ) {
 
     // Obtain focus manager
     val focusManager = LocalFocusManager.current
-    val context = LocalContext.current as FragmentActivity
-    val activity = (LocalContext.current as? Activity)
+    val context = LocalContext.current
 
     // Google sign in
     val googleSignInLauncher = rememberLauncherForActivityResult(
         GoogleSignInActivityResultContract()
     ) { result ->
-        viewModel.onGoogleLoginPressed(
+        onGoogleLoginButtonPressed(
             result,
-            onSignInSuccessCallBack = {
-                onGoogleSignInButtonClickNavigate()
-            },
-        )
+        ) {
+            onGoogleSignInButtonClickNavigate()
+        }
     }
     LaunchedEffect(true) {
-        viewModel.ll(context)
+        checkIfCanShowBioMetrics(context as FragmentActivity)
     }
 
-    if (viewModel._loading) {
+    if (loading) {
         MQLKLoadingDialog()
     }
 
-    if (viewModel.toastMessage.isNotEmpty()) {
-        Toast.makeText(context, viewModel.toastMessage, Toast.LENGTH_SHORT).show()
-        viewModel.showToast("") // Reset the toast message after showing
+    if (toastMessage.isNotEmpty()) {
+        Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
+        showToast("")// Reset the toast message after showing
+
     }
+
+//    val screenSize = rememberWindowSizeClass()
+//    val modifier = Modifier
+//    if (screenSize.width.size > 1007) modifier
+//        .width((screenSize.width.size / 2).dp)
+//        .fillMaxHeight()
+//    else modifier.fillMaxSize()
 
     LazyColumn(
         modifier = Modifier
@@ -112,11 +193,11 @@ fun MQLKLoginScreen(
                 MQLKOutlinedTextField(
                     placeHolder = context.getString(R.string.emailOrUserName),
                     onChange = {
-                        viewModel.onEmailValueChange(it)
+                        onEmailValueChange(it)
                     },
-                    value = viewModel.email,
-                    isError = viewModel.isEmailError,
-                    errorText = viewModel.emailErrorText,
+                    value = email,
+                    isError = isEmailError,
+                    errorText = emailErrorText,
 
                     ) {
                     Icon(Icons.Default.Person, null)
@@ -130,11 +211,11 @@ fun MQLKLoginScreen(
             MQLKOutlinedTextField(
                 placeHolder = context.getString(R.string.password),
                 onChange = {
-                    viewModel.onPasswordValueChange(it)
+                    onPasswordValueChange(it)
                 },
-                value = viewModel.password,
-                isError = viewModel.isPasswordError,
-                errorText = viewModel.passwordErrorText,
+                value = password,
+                isError = isPasswordError,
+                errorText = passwordErrorText,
                 isMask = true,
                 passwordVisibilityState = false,
             ) {
@@ -158,10 +239,9 @@ fun MQLKLoginScreen(
             Column {
                 MQLKElevatedButton(name = context.getString(R.string.signIn)) {
                     focusManager.clearFocus()
-                    viewModel.onSignInButtonPressed(
-                        callback = {
-                            onSignInButtonClickNavigate()
-                        });
+                    onSignInButtonPressed {
+                        onSignInButtonClickNavigate()
+                    };
                 }
                 Spacer(modifier = Modifier.height(16.dp))
             }
@@ -199,12 +279,12 @@ fun MQLKLoginScreen(
             }
         }
 
-        if (viewModel.canShowBioMetrics) {
+        if (canShowBioMetrics) {
             item {
                 MQLKTouchIdCard {
-                    viewModel.doBioMetricsAuth(context, callback = {
+                    doBioMetricsAuth(context as FragmentActivity) {
                         onBioMetricsSignInButtonClickNavigate()
-                    })
+                    }
                 }
                 Spacer(modifier = Modifier.height(30.dp))
             }
@@ -245,9 +325,38 @@ fun MQLKLoginScreen(
 
 }
 
-//@Preview(showBackground = true, device = Devices.PHONE, showSystemUi = false)
-//@Composable
-//fun PreviewMFMCLoginScreen() {
-//    val navController = rememberNavController()
-//    MQLKLoginScreen(navController, {})
-//}
+@Preview(showBackground = true, device = Devices.NEXUS_10, showSystemUi = false)
+@Composable
+fun PreviewMFMCLoginScreen() {
+    val navController = rememberNavController()
+    MQLKTheme(
+        windowSizeClass = rememberWindowSizeClass(),
+        byPassConfig = true
+    ) {
+        MQLKLoginScreen(
+            navController,
+            onSignInButtonClickNavigate = {},
+            onGoogleSignInButtonClickNavigate = {},
+            onBioMetricsSignInButtonClickNavigate = {},
+            onGoogleLoginButtonPressed = { a, c -> },
+            checkIfCanShowBioMetrics = {},
+            toastMessage = "",
+            loading = false,
+            showToast = {
+
+            },
+            email = "Email",
+            isEmailError = false,
+            emailErrorText = "",
+            onEmailValueChange = {},
+            password = "Pass",
+            isPasswordError = false,
+            passwordErrorText = "",
+            onPasswordValueChange = {},
+            onSignInButtonPressed = {},
+            canShowBioMetrics = true,
+            doBioMetricsAuth = { f, c -> }
+        )
+
+    }
+}

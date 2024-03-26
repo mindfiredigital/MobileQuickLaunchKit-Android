@@ -4,8 +4,11 @@ import android.net.Uri
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
@@ -30,7 +33,7 @@ fun MQLKProfileImageWrapper(uri: Uri?, width: Dp, onClick: () -> Unit) {
     }) {
 
         if (uri == null) {
-            Surface(Modifier.size(width * .5f),
+            Surface(Modifier.width(200.dp).height(200.dp),
                 shape = CircleShape,
                 color = Color.Red,
                 content = {})
