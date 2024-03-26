@@ -7,9 +7,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.foss.auth_domain.models.ForgotPasswordRequestParams
 import com.foss.auth_domain.use_case.GetForgotPasswordUseCase
-import com.foss.core.common.validations.MFMKValidations
 import com.foss.core.models.Resource
 import com.foss.core_ui.navigation.MQLKScreens
+import com.foss.utility.MQLKValidations
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -75,7 +75,7 @@ class ForgotPasswordViewModel @Inject constructor(
         navigateTo: (String) -> Unit,
     ) {
         // Field validations for email and password
-        if (!MFMKValidations.isValidEmail(_email)) {
+        if (!MQLKValidations.isValidEmail(_email)) {
             _isEmailError = true
             _emailErrorText = "Please provide a valid email"
         } else {
