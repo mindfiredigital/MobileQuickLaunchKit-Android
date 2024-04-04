@@ -6,6 +6,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 
 @Composable
@@ -16,8 +17,8 @@ fun MQLKScreenTitle(name: String) {
     ) {
         Text(
             name,
-            style = MaterialTheme.typography.displaySmall.copy(fontWeight = FontWeight.Bold),
-            color = MaterialTheme.colorScheme.primary
+            style = MaterialTheme.typography.displayMedium.copy(fontWeight = FontWeight.Bold),
+            color = Color.Black
         )
     }
 }

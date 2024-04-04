@@ -96,7 +96,7 @@ private fun CharView(
         color = if (isFocused) {
             MaterialTheme.colorScheme.primary
         } else {
-            MaterialTheme.colorScheme.secondary
+            MaterialTheme.colorScheme.onPrimary
         }
     )
 }

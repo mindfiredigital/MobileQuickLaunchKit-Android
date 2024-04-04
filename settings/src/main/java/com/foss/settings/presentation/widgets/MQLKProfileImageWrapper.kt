@@ -6,14 +6,16 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,10 +35,20 @@ fun MQLKProfileImageWrapper(uri: Uri?, width: Dp, onClick: () -> Unit) {
     }) {
 
         if (uri == null) {
-            Surface(Modifier.width(200.dp).height(200.dp),
+            Surface(
+                Modifier
+                    .width(200.dp)
+                    .height(200.dp),
                 shape = CircleShape,
-                color = Color.Red,
-                content = {})
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.onTertiary),
+                content = {
+                    Icon(
+                        Icons.Default.Person,
+                        null,
+                        tint = MaterialTheme.colorScheme.onTertiary,
+                        modifier = Modifier.padding(horizontal = 8.dp)
+                    )
+                })
         } else {
             AsyncImage(
                 modifier = Modifier
@@ -59,8 +71,8 @@ fun MQLKProfileImageWrapper(uri: Uri?, width: Dp, onClick: () -> Unit) {
                 width = 1.dp, color = Color.Black.copy(alpha = .5f)
             )
         ) {
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(Icons.Default.Edit, null)
+            IconButton(onClick = { /*TODO*/ }, enabled = false) {
+                Icon(Icons.Default.Edit, null, tint = MaterialTheme.colorScheme.onTertiary)
             }
         }
     }

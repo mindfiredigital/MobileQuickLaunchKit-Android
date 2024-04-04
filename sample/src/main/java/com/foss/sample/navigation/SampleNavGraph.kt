@@ -11,7 +11,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.foss.auth_presentation.screens.forgot_password.MQLKForgotPasswordScreen
 import com.foss.auth_presentation.screens.login.LoginScreenViewModel
-import com.foss.auth_presentation.screens.login.MQLKLoginScreen
 import com.foss.auth_presentation.screens.login.MQLKLoginScreenParams
 import com.foss.auth_presentation.screens.otp_verification.MQLKOTPVerificationScreen
 import com.foss.auth_presentation.screens.set_password.MQLKSetNewPasswordScreen
@@ -140,7 +139,11 @@ fun SampleMQLKNavigationGraph(
             })
         ) {
 
-            MQLKWebView(navController, it.arguments?.getString("url"))
+            MQLKWebView(
+                navController = navController,
+                url = it.arguments?.getString("url"),
+                title = it.arguments?.getString("title")
+            )
         }
     }
 }

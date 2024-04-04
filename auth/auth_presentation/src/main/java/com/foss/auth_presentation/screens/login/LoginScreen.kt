@@ -162,13 +162,6 @@ fun MQLKLoginScreen(
 
     }
 
-//    val screenSize = rememberWindowSizeClass()
-//    val modifier = Modifier
-//    if (screenSize.width.size > 1007) modifier
-//        .width((screenSize.width.size / 2).dp)
-//        .fillMaxHeight()
-//    else modifier.fillMaxSize()
-
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()

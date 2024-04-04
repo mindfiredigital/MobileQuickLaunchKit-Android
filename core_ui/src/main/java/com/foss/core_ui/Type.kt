@@ -17,13 +17,13 @@ val customTypography = Typography(
     displayMedium = TextStyle(
         fontFamily = FontFamily(Font(R.font.poppins_bold_700)),
         fontWeight = FontWeight.Bold,
-        fontSize = 36.sp,
+        fontSize = 30.sp,
         color = DefaultTextColor
     ),
     displayLarge = TextStyle(
         fontFamily = FontFamily(Font(R.font.poppins_bold_700)),
         fontWeight = FontWeight.Bold,
-        fontSize = 48.sp
+        fontSize = 26.sp
     ),
 
     headlineSmall = TextStyle(

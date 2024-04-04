@@ -8,8 +8,8 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
 
 @Composable
-fun MQLKWebView(navController: NavController, url: String?) {
-    MFMKAppBarWrapper(navController = navController) {
+fun MQLKWebView(navController: NavController, url: String?, title: String?) {
+    MFMKAppBarWrapper(navController = navController, title = title) {
         AndroidView(
             factory = { context ->
                 WebView(context).apply {
