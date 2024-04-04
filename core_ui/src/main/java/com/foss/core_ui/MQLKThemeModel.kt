@@ -8,6 +8,7 @@ data class MQLKThemeModel(
     val onPrimary: Color,
     val secondary: Color,
     val tertiary: Color,
+    val onTertiary: Color,
     val background: Color,
     val surface: Color
 )

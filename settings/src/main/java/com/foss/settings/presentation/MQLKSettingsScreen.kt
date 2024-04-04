@@ -33,6 +33,8 @@ fun MQLKSettingsScreen(navController: NavController) {
             modifier = it.padding(horizontal = 20.dp)
         ) {
 
+
+
             // SubTitle
             item {
                 MQLKSettingPageSubTitle(
@@ -56,7 +58,12 @@ fun MQLKSettingsScreen(navController: NavController) {
 
             item {
                 MQLKSettingPageItem(context.getString(R.string.privacy)) {
-                    navController.navigate(MQLKScreens.WebView.passUrl(url = AppConstant.Endpoints.PRIVACY_URL))
+                    navController.navigate(
+                        MQLKScreens.WebView.passUrlTitle(
+                            url = AppConstant.Endpoints.PRIVACY_URL,
+                            title = context.getString(R.string.privacy)
+                        )
+                    )
                 }
             }
 
@@ -74,14 +81,24 @@ fun MQLKSettingsScreen(navController: NavController) {
 
             item {
                 MQLKSettingPageItem(context.getString(R.string.help)) {
-                    navController.navigate(MQLKScreens.WebView.passUrl(url = AppConstant.Endpoints.HELP_URL))
+                    navController.navigate(
+                        MQLKScreens.WebView.passUrlTitle(
+                            url = AppConstant.Endpoints.HELP_URL,
+                            title = context.getString(R.string.help)
+                        )
+                    )
 
                 }
             }
 
             item {
                 MQLKSettingPageItem(context.getString(R.string.aboutUs)) {
-                    navController.navigate(MQLKScreens.WebView.passUrl(url = AppConstant.Endpoints.ABOUT_US_URL))
+                    navController.navigate(
+                        MQLKScreens.WebView.passUrlTitle(
+                            url = AppConstant.Endpoints.ABOUT_US_URL,
+                            title = context.getString(R.string.aboutUs)
+                        )
+                    )
                 }
             }
         }

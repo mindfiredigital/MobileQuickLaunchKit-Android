@@ -24,6 +24,7 @@ dependencies {
     compose()
     composeNavigation()
     core()
+    coilImage()
 }
 
 publishing {

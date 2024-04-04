@@ -48,7 +48,8 @@ fun MFMKAppBarWrapper(
                     }
 
 
-                }
+                },
+                windowInsets = TopAppBarDefaults.windowInsets
             )
         }
     ) {

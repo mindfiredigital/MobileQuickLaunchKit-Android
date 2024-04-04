@@ -5,23 +5,14 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -39,9 +30,10 @@ import com.foss.core_ui.navigation.MQLKNavItem
 import com.foss.core_ui.navigation.MQLKScreens
 import com.foss.core_ui.rememberWindowSizeClass
 import com.foss.core_ui.widgets.MQLKBottomNavBar
+import com.foss.core_ui.widgets.MQLKDrawerTopSection
 import com.foss.core_ui.widgets.MQLKModelNavigationDrawerWrapper
+import com.foss.core_ui.widgets.MQLKNavigationDrawerItem
 import com.foss.sample.navigation.SampleMQLKNavigationGraph
-import com.foss.utility.MQLKUtilities
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -93,43 +85,40 @@ fun MyApp() {
         drawerState,
         items = listOf(
             {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Surface(content = {})
-                    IconButton(modifier = Modifier, onClick = {
+                MQLKDrawerTopSection(
+                    onCloseButtonClick = {
                         scope.launch {
                             drawerState.apply {
                                 if (isClosed) open() else close()
                             }
                         }
-                    }) {
-                        Icon(Icons.Default.Close, null)
-                    }
-                }
-                NavigationDrawerItem(
-                    label = { Text(text = "Drawer Item") },
-                    selected = false,
-                    onClick = { MQLKUtilities.sharePlainText(context = context, "") },
-                    icon = {
-                        Icon(Icons.Default.Phone, null)
                     },
+                    imageUrl = "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fDB8fHww"
                 )
             },
             {
-                NavigationDrawerItem(label = { Text(text = "Drawer Item") },
-                    selected = false,
-                    onClick = { /*TODO*/ })
+                MQLKNavigationDrawerItem(name = "Home", isSelected = true, icon = {
+                    Icon(Icons.Default.Home, null)
+
+                }, onClickAction = {})
+
             },
             {
-                NavigationDrawerItem(label = { Text(text = "Drawer Item") },
-                    selected = false,
-                    onClick = { /*TODO*/ })
+                MQLKNavigationDrawerItem(name = "Settings", isSelected = false, icon = {
+                    Icon(Icons.Default.Settings, null)
+
+                }, onClickAction = {})
+            },
+            {
+                MQLKNavigationDrawerItem(name = "Settings", isSelected = false, icon = {
+                    Icon(Icons.Default.Settings, null)
+
+                }, onClickAction = {})
             },
         ),
     ) {
-        Scaffold(modifier = Modifier.clickable(indication = null,
+        Scaffold(modifier = Modifier.clickable(
+            indication = null,
             interactionSource = remember { MutableInteractionSource() }) {
             focusManager.clearFocus()
         }, containerColor = MaterialTheme.colorScheme.background, bottomBar = {

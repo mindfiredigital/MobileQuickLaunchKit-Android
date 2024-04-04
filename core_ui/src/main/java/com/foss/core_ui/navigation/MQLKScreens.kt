@@ -51,15 +51,20 @@ sealed class MQLKScreens(
     )
 
     object WebView : MQLKScreens(
-        "webview_screen/{url}",
+        "webview_screen/{url}/{title}",
     ) {
-        fun passUrl(url: String): String {
+        fun passUrlTitle(url: String,title:String): String {
             val encodedUrl =
                 URLEncoder.encode(
                     url,
                     StandardCharsets.UTF_8.toString()
                 )
-            return this.route.replace(oldValue = "{url}", newValue = encodedUrl)
+            val encodedTitle =
+                URLEncoder.encode(
+                    title,
+                    StandardCharsets.UTF_8.toString()
+                )
+            return this.route.replace(oldValue = "{url}", newValue = encodedUrl).replace("{title}", encodedTitle)
         }
     }
 

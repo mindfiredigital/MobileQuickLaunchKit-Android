@@ -5,6 +5,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ripple.rememberRipple
@@ -22,6 +23,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.foss.core_ui.MQLKTheme
+import com.foss.core_ui.rememberWindowSizeClass
 
 @Composable
 fun MQLKElevatedButton(
@@ -36,6 +39,7 @@ fun MQLKElevatedButton(
         ),
         modifier = Modifier
             .fillMaxWidth()
+            .height(50.dp)
             .clickable( // Add clickable modifier
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(
@@ -51,7 +55,7 @@ fun MQLKElevatedButton(
         Text(
             name,
             color = Color.White,
-            style = TextStyle(fontSize = 15.sp, fontWeight = FontWeight.W700)
+            style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.W700)
         )
     }
 
@@ -62,16 +66,19 @@ fun MQLKElevatedButton(
 @Composable
 fun PreviewMFMCElevatedButton() {
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier.padding(16.dp)
-    ) {
-        MQLKElevatedButton(
-            name = "Login",
-            onClick = {}
+    MQLKTheme(windowSizeClass = rememberWindowSizeClass()) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.padding(16.dp)
+        ) {
+            MQLKElevatedButton(
+                name = "Login",
+                onClick = {}
 
-        )
+            )
+        }
     }
+
 
 }
