@@ -40,7 +40,7 @@ fun MQLKModelNavigationDrawerWrapper(
                 Spacer(modifier = Modifier.weight(1f))
                 HorizontalDivider(Modifier.padding(horizontal = 16.dp))
                 Text(
-                    "Version: 1.0.0",
+                    "App Version: v1.0.0(1)",
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontWeight = FontWeight.W700
                     ),

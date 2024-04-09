@@ -22,10 +22,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.foss.core_ui.MQLKTheme
+import com.foss.core_ui.R
 import com.foss.core_ui.navigation.MQLKNavItem
 import com.foss.core_ui.navigation.MQLKScreens
 import com.foss.core_ui.rememberWindowSizeClass
@@ -110,8 +112,8 @@ fun MyApp() {
                 }, onClickAction = {})
             },
             {
-                MQLKNavigationDrawerItem(name = "Settings", isSelected = false, icon = {
-                    Icon(Icons.Default.Settings, null)
+                MQLKNavigationDrawerItem(name = "Logout", isSelected = false, icon = {
+                    Icon(painterResource(id = R.drawable.baseline_logout), null)
 
                 }, onClickAction = {})
             },
