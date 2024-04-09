@@ -1,5 +1,7 @@
 # MobileQuickLaunchKit Documentation
 
+<img src="./docs/screenShots/MobileQuickLaunchKit_Android.jpg" >
+
 ## Overview
 
 MobileQuickLaunchKit is a mobile app development kit built using Jetpack Compose
