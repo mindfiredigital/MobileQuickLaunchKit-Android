@@ -16,22 +16,26 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun MQLKSettingPageSubTitle(name: String, resource: Int) {
+fun MQLKSettingPageSubTitle(name: String, resource: Int? = null) {
 
     Column {
         Spacer(modifier = Modifier.height(22.dp))
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                painter = painterResource(id = resource),
-                "",
-                modifier = Modifier.size(36.dp),
-                tint = MaterialTheme.colorScheme.primary
-            )
-            Spacer(modifier = Modifier.width(17.dp))
+
+            if (resource != null) {
+                Icon(
+                    painter = painterResource(id = resource),
+                    "",
+                    modifier = Modifier.size(36.dp),
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
+                Spacer(modifier = Modifier.width(17.dp))
+            }
+
             Text(
                 name,
                 style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.onPrimary
             )
         }
         Spacer(modifier = Modifier.height(21.dp))
