@@ -28,9 +28,10 @@ fun MQLKTheme(
     isDarkTheme: Boolean = isSystemInDarkTheme(),
     lightTheme: MQLKThemeModel = MQLKThemeModel(
         primary = Red,
-        onPrimary = DefaultTextColor, /// Text Color
-        secondary = DarkGrey,
-        tertiary = Pink40,
+        onPrimary = DefaultTextColor,       /// Text Color
+        secondary = colorE6E6E6,            /// Border Color
+        tertiary = color808080,
+        onTertiary = color808080,           /// Placeholder color
         background = Color.White,
         surface = Color.White,
     ),
@@ -39,6 +40,7 @@ fun MQLKTheme(
         onPrimary = LightGrey,
         secondary = MedGrey,
         tertiary = Pink40,
+        onTertiary = color333333,
         background = DarkBlue,
         surface = Ebony
     ),
@@ -119,8 +121,9 @@ private fun MQLKThemeModel.toLightColorScheme(): ColorScheme {
         onPrimary = this.onPrimary,
         secondary = this.secondary,
         tertiary = this.tertiary,
+        onTertiary = this.onTertiary,
         background = this.background,
-        surface = this.surface
+        surface = this.surface,
     )
 }
 
@@ -130,6 +133,7 @@ private fun MQLKThemeModel.toDarkColorScheme(): ColorScheme {
         onPrimary = onPrimary,
         secondary = secondary,
         tertiary = tertiary,
+        onTertiary = onTertiary,
         background = background,
         surface = surface
     )

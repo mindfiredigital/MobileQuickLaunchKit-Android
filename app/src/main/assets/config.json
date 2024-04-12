@@ -1,7 +1,7 @@
 {
   "BASE_URL": "http://10.0.2.2:3001/api/v1/",
   "Google_WEB_CLIENT_ID": "your_google_web_client_id",
-  "PRIVACY_URL": "https://www.google.com/",
-  "HELP_URL": "https://www.google.com/",
-  "ABOUT_US_URL": "https://www.google.com/"
+  "PRIVACY_URL": "https://mindfiredigital.github.io/privacy-policy",
+  "HELP_URL": "https://www.mindfiresolutions.com/contact-us/",
+  "ABOUT_US_URL": "https://mindfiredigital.github.io/about"
 }

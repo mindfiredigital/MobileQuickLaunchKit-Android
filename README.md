@@ -1,5 +1,7 @@
 # MobileQuickLaunchKit Documentation
 
+<img src="./docs/screenShots/MobileQuickLaunchKit_Android.jpg" >
+
 ## Overview
 
 MobileQuickLaunchKit is a mobile app development kit built using Jetpack Compose
@@ -16,6 +18,19 @@ a specific purpose.
 4. [Mockoon Setup Instructions](./docs/mockoon_setup.md)
 5. [API Setup](./docs/apis_setup.md)
 6. [Troubleshoot](#troubleshoot)
+
+### Example Screens
+
+Utilize our pre-built screens to jumpstart your app development:
+
+1. **Authentication**: Simplify user sign-in, sign-up, and password recovery processes.
+
+2. **Settings**: Customize user preferences effortlessly for a personalized experience and account management.
+
+3. **Navigation**: Seamlessly organize app content with tab and drawer views.
+
+**[Explore all available screens](./docs/ScreenShots.md)**
+
 
 ## Installation
 
